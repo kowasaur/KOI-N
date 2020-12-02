@@ -1,0 +1,15 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: darkslategrey;
+}
+
+header {
+  display: flex;
+  place-items: center;
+  justify-content: space-between;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
