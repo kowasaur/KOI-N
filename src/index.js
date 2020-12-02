@@ -12,7 +12,7 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 // Databse
 var knex = require("knex")({
   client: "sqlite3",
-  connection: { filename: path.join(__dirname, "database.sqlite") },
+  connection: { filename: path.join(__dirname, ".." ,"database.sqlite") },
   useNullAsDefault: true
 });
 
@@ -39,6 +39,13 @@ const createWindow = () => {
     result.then((rows) => {
       mainWindow.webContents.send("resultSent", rows);
     });
+  });
+  ipcMain.on("TransactionAdded", (evt, transaction) => {
+    console.log(transaction);
+    knex('transactions').insert(transaction).then( () => {
+      mainWindow.webContents.send("TransactionAddedSuccess");
+    });
+    
   });
 };
 

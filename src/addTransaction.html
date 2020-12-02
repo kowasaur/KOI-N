@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="index.css">
-    <script src="loadData.js"></script>
   </head>
   <body>
     <header>
@@ -11,10 +10,27 @@
       <a href="">View Transactions</a>
       <a href="">Add Transaction</a>
     </header>
-    <form>
-      <label for=""></label>
+    <form oninput="checkFilled()">
+      <label for="ticker">Ticker</label>
+      <input type="text" name="ticker" id="ticker" required>
+
+      <label for="type">Type</label>
+      <select name="type" id="type">
+        <option value="buy">Buy</option>
+        <option value="sell">Sell</option>
+        <option value="airdrop">Airdrop</option>
+        <option value="move">Move</option>
+        <option value="long">Long</option>
+        <option value="short">Short</option>
+      </select>
       
-      <button>Add Transaction</button>
+      <label for="amount">Amount</label>
+      <input type="number" name="amount" id="amount" required>
+      <button type="button" onclick="addTransaction()" disabled>Add Transaction</button>
     </form>
+
+    <div id="success">Transaction Added Succesfully</div>
+
+    <script src="addTransaction.js"></script>
   </body>
 </html>
