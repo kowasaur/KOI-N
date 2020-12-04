@@ -35,10 +35,40 @@ const createWindow = () => {
 
   // Databse stuff
   ipcMain.on("mainWindowLoaded", () => {
-    let result = knex.select("ticker").from("coins");
-    result.then((rows) => {
-      mainWindow.webContents.send("resultSent", rows);
-    });
+    // let result = knex.select("ticker").from("coins");
+    // result.then((rows) => {
+    //   mainWindow.webContents.send("resultSent", rows);
+    // });
+    let portfolio = [
+      {
+        image: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
+        coin: "Bitcoin",
+        amount: "0.77",
+        value: "$20,000",
+        invested: "$10,000",
+        $profit: "$10,000",
+        percent_profit: "100%"
+      },
+      {
+        image: "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
+        coin: "Ethereum",
+        amount: "37",
+        value: "$30,000",
+        invested: "$5,000",
+        $profit: "$25,000",
+        percent_profit: "500%"
+      },
+      {
+        image: "https://assets.coingecko.com/coins/images/2/large/litecoin.png?1547033580",
+        coin: "Litecoin",
+        amount: "8.3",
+        value: "$1,000",
+        invested: "$250",
+        $profit: "$750",
+        percent_profit: "300%"
+      },
+    ];
+    mainWindow.webContents.send("portfolioGenerated", portfolio)
   });
   ipcMain.on("TransactionAdded", (evt, transaction) => {
     console.log(transaction);

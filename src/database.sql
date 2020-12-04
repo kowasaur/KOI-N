@@ -2,14 +2,8 @@
 
 CREATE TABLE coins (
 	ticker TEXT not null,
-	name TEXT,
-	URL TEXT,
-	PRIMARY KEY(ticker)
+	id TEXT not null,
 );
-
-INSERT INTO coins VALUES
-('BTC', 'Bitcoin', 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=aud&ids=bitcoin'),
-('ETH', 'Ethereum', 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=aud&ids=ethereum');
 
 -- CREATE TABLE portfolio (
 

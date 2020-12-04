@@ -46,6 +46,7 @@
     }
   },
   "dependencies": {
+    "coingecko-api": "^1.0.10",
     "electron-squirrel-startup": "^1.0.0",
     "knex": "^0.21.12",
     "sqlite3": "^5.0.0"
