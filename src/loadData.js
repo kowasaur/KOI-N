@@ -13,36 +13,40 @@ async function coingecko() {
 }
 coingecko();
 
-document.addEventListener("DOMContentLoaded",  () => {
-    ipc.send("mainWindowLoaded");
-    // ipc.on("resultSent", (evt, result) => {
-    //     let resultEl = document.getElementById("result");
-    //     console.log(result);
-    //     for (let i = 0; i < result.length; i++) {
-    //         resultEl.innerHTML += "Ticker: " + result[i].ticker.toString() + "<br>";
-    //     }
-    // });
-    ipc.on("portfolioGenerated", (evt, portfolio) => {
-        console.log(portfolio);
-        table = document.querySelector('tbody')
-        for (let i = 0; i < portfolio.length; i++) {
-            const row = document.createElement("tr");
-            table.appendChild(row);
-            const currency = portfolio[i];
-            const keys = Object.keys(currency);
-            keys.forEach((key) => {
-                if (key !== 'coin') {
-                    cell = document.createElement("td");
-                    if (key === 'image') {
-                        cell.innerHTML = `<img height=30 src="${currency[key]}"">${currency.coin}`
-                    } else {
-                        cell.innerHTML = currency[key];
-                    }
-                    row.appendChild(cell)
+function appendElement(element, parent, content) {
+    element = document.createElement(element);
+    element.innerHTML = content || '';
+    parent.appendChild(element);
+    return element;
+}
+
+document.addEventListener("DOMContentLoaded",  () => ipc.send("mainWindowLoaded"));
+
+ipc.on("totalGenerated", (evt, total) => {
+    const ul = document.querySelector('ul');
+    appendElement("li", ul, `Value: ${total.value}`);
+    appendElement("li", ul, `Invested: ${total.invested}`);
+    appendElement("li", ul, `$ Profit: ${total.$profit}`);
+    appendElement("li", ul, `% Profit: ${total.percent_profit}`);
+})
+
+ipc.on("portfolioGenerated", (evt, portfolio) => {
+    console.log(portfolio);
+    const table = document.querySelector('tbody')
+    for (let i = 0; i < portfolio.length; i++) {
+        const row = appendElement("tr", table)
+        const currency = portfolio[i];
+        const keys = Object.keys(currency);
+        keys.forEach((key) => {
+            if (key !== 'coin') {
+                if (key === 'image') {
+                    content = `<img height=30 src="${currency[key]}"">${currency.coin}`
+                } else {
+                    content = currency[key];
                 }
-                console.log(`${key}: ${currency[key]}`);
-            })
-            // row.appendChild(document.createElement("td"))
-        }
-    })
-});
+                appendElement("td", row, content)
+            }
+            // console.log(`${key}: ${currency[key]}`);
+        })
+    }
+})

@@ -16,6 +16,12 @@ var knex = require("knex")({
   useNullAsDefault: true
 });
 
+// Create number formatter
+const formatter = new Intl.NumberFormat('en-AU', {
+  style: 'currency',
+  currency: 'AUD'
+});
+
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -31,14 +37,24 @@ const createWindow = () => {
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
   // Hides the menu bar
-  mainWindow.setMenuBarVisibility(false)
+  // mainWindow.setMenuBarVisibility(false)
 
   // Databse stuff
   ipcMain.on("mainWindowLoaded", () => {
-    // let result = knex.select("ticker").from("coins");
-    // result.then((rows) => {
-    //   mainWindow.webContents.send("resultSent", rows);
-    // });
+    knex('transactions').sum('amount as totalDeposited').where('type', 'deposit').then((result) => {
+      var totalDeposited = result[0]['totalDeposited']
+      knex('transactions').sum('amount as totalWithdrawn').where('type', 'withdraw').then((result)=>{
+        var totalWithdrawn = result[0]['totalWithdrawn']
+        let total = {
+          value: "",
+          invested: formatter.format(totalDeposited - totalWithdrawn),
+          $profit: "",
+          percent_profit: ""
+        }
+        mainWindow.webContents.send("totalGenerated", total);
+      })
+    })
+    
     let portfolio = [
       {
         image: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",

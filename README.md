@@ -25,6 +25,10 @@ Maybe have query results stored in a variable somewhere so it doesn't have to re
 - Add support thing (addresses to donate to) in readme and about (like this https://github.com/SpiralDevelopment/CryptoTracker#support)
 - Make `database.sqlite` in AppData or something and create the file if it doesn't exist
     - also maybe allow for importing of database files
+    - make it so in the portable version, the database is in the same folder as everything else
 - Have question marks you can hover over that explain stuff
 - Put somewhere where I got my tax info from
 - Make it so you can change currency (not just AUD)
+- In Add Transaction, make required boxes stand out (like have an asterisk or something)
+- Maybe make both profits in the same box
+- Change order in Add Transaction so it;s like deposit 500 btc
