@@ -32,3 +32,13 @@ Maybe have query results stored in a variable somewhere so it doesn't have to re
 - In Add Transaction, make required boxes stand out (like have an asterisk or something)
 - Maybe make both profits in the same box
 - Change order in Add Transaction so it;s like deposit 500 btc
+- Make placeholder text lighter so that it is more distinguisable
+- Remove all console.logs() when I finish
+- Make prices round like:
+    - $25,512
+    - $787.35
+    - $17.612
+    - $1,532.1
+    - Or maybe don't but make sure it's right aligned
+- Make SQL queries not raw and actually use knex like your supposed to
+- Change the default menu bar

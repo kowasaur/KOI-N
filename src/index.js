@@ -1,6 +1,9 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
+const CoinGecko = require('coingecko-api');
+const CoinGeckoClient = new CoinGecko();
+
 // Enable live reload for front end and back end
 require('electron-reload')(__dirname, { electron: require(path.join(__dirname, '..', 'node_modules', 'electron')) });
 
@@ -39,53 +42,57 @@ const createWindow = () => {
   // Hides the menu bar
   // mainWindow.setMenuBarVisibility(false)
 
-  // Databse stuff
-  ipcMain.on("mainWindowLoaded", () => {
-    knex('transactions').sum('amount as totalDeposited').where('type', 'deposit').then((result) => {
-      var totalDeposited = result[0]['totalDeposited']
-      knex('transactions').sum('amount as totalWithdrawn').where('type', 'withdraw').then((result)=>{
-        var totalWithdrawn = result[0]['totalWithdrawn']
-        let total = {
-          value: "",
-          invested: formatter.format(totalDeposited - totalWithdrawn),
+  // Database stuff
+  ipcMain.on("mainWindowLoaded", () => {  
+    
+    knex.schema.raw("select id, sum(amount) as amount from (select id, sum(amount) as amount from transactions WHERE type = 'buy' GROUP BY id UNION select id, -sum(amount) as amount from transactions WHERE type = 'sell' GROUP BY id) GROUP  BY id").then(async (result) => {
+      var coins = {};
+      for (let i = 0; i < result.length; i++) {
+        id = result[i]['id']
+        amount = result[i]['amount']
+        if (id !== 'aud') {
+          // ids.push(id)
+          coins[id] = amount
+        }
+      }
+
+      let marketData = await CoinGeckoClient.coins.markets({vs_currency: 'aud', ids: Object.keys(coins)})
+      marketData  = marketData.data
+      portfolio = []
+      var totalValue = 0;
+      for (let i = 0; i < marketData.length; i++) {
+        let value = marketData[i].current_price * coins[marketData[i].id]
+        portfolio.push({
+          image: marketData[i].image,
+          coin: marketData[i].name,
+          amount: coins[marketData[i].id],
+          value: formatter.format(value),
+          invested: "",
           $profit: "",
           percent_profit: ""
+        });
+        totalValue += value;
+      }
+      mainWindow.webContents.send("portfolioGenerated", portfolio)
+      
+      // Whole Portfolio
+      knex.schema.raw("SELECT (SELECT ifnull(sum(amount), 0) FROM transactions WHERE type = 'deposit') - (SELECT ifnull(sum(amount),0)FROM transactions WHERE type='withdraw') as 'invested'").then((result)=>{
+        const invested = result[0]['invested']
+        let $profit = totalValue - invested
+        let total = {
+          value: formatter.format(totalValue),
+          invested: formatter.format(invested),
+          $profit: formatter.format($profit),
+          percent_profit: `${($profit / invested * 100).toFixed(2)}%`
         }
         mainWindow.webContents.send("totalGenerated", total);
       })
     })
-    
-    let portfolio = [
-      {
-        image: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
-        coin: "Bitcoin",
-        amount: "0.77",
-        value: "$20,000",
-        invested: "$10,000",
-        $profit: "$10,000",
-        percent_profit: "100%"
-      },
-      {
-        image: "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
-        coin: "Ethereum",
-        amount: "37",
-        value: "$30,000",
-        invested: "$5,000",
-        $profit: "$25,000",
-        percent_profit: "500%"
-      },
-      {
-        image: "https://assets.coingecko.com/coins/images/2/large/litecoin.png?1547033580",
-        coin: "Litecoin",
-        amount: "8.3",
-        value: "$1,000",
-        invested: "$250",
-        $profit: "$750",
-        percent_profit: "300%"
-      },
-    ];
-    mainWindow.webContents.send("portfolioGenerated", portfolio)
+    // Whole Portfolio
+    // .then()
+
   });
+  // When a user clicks Add Transaction, this is called
   ipcMain.on("TransactionAdded", (evt, transaction) => {
     console.log(transaction);
     knex('transactions').insert(transaction).then( () => {
@@ -116,6 +123,3 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.

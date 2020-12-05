@@ -11,7 +11,7 @@ CREATE TABLE coins (
 -- )
 
 CREATE TABLE transactions  (
-	ticker TEXT not null,
+	id TEXT not null,
 	type TEXT not null,
 	amount NUMBER not null,
 	otherParty TEXT,
@@ -23,6 +23,7 @@ CREATE TABLE transactions  (
 	link TEXT,
 	fromWallet TEXT,
 	note TEXT,
+	orderCreated TEXT,
 	-- maybe get rid of this
 	fiatValue TEXT
 );

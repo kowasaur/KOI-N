@@ -7,7 +7,7 @@ function value(id) {
 
 // Makes sure the user doesn't leave stuff blank that they shouldn't
 function checkFilled() {
-    if (!!value("ticker") && !!value("amount") ) {
+    if (!!value("id") && !!value("amount") ) {
         document.querySelector('button').disabled = false
     } else {
         document.querySelector('button').disabled = true
@@ -17,7 +17,7 @@ function checkFilled() {
 // Sends request to index.js to add the transaction
 function addTransaction() {
     var transaction = {
-        ticker: value("ticker").toUpperCase(),
+        id: value("id").toLowerCase(),
         type: value("type"),
         amount: Number(value("amount"))
     };

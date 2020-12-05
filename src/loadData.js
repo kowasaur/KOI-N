@@ -9,9 +9,8 @@ async function coingecko() {
     // console.log(data.data.market_data.current_price.aud);
     // console.log(data.data[0].current_price);
     let data = await CoinGeckoClient.coins.markets({vs_currency: 'aud', ids: 'bitcoin, ethereum, litecoin'})
-    console.log(data.data);
+    return data.data
 }
-coingecko();
 
 function appendElement(element, parent, content) {
     element = document.createElement(element);
@@ -31,7 +30,7 @@ ipc.on("totalGenerated", (evt, total) => {
 })
 
 ipc.on("portfolioGenerated", (evt, portfolio) => {
-    console.log(portfolio);
+    // console.log(portfolio);
     const table = document.querySelector('tbody')
     for (let i = 0; i < portfolio.length; i++) {
         const row = appendElement("tr", table)

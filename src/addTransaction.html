@@ -11,8 +11,8 @@
       <a href="">Add Transaction</a>
     </header>
     <form oninput="checkFilled()">
-      <label for="ticker">Ticker</label>
-      <input type="text" name="ticker" id="ticker" required>
+      <label for="id">Currency</label>
+      <input type="text" name="id" id="id" placeholder="bitcoin">
 
       <label for="type">Type</label>
       <select name="type" id="type">
@@ -29,7 +29,8 @@
       </select>
       
       <label for="amount">Amount</label>
-      <input type="number" name="amount" id="amount" required>
+      <input type="number" name="amount" id="amount" placeholder="0.052">
+
       <button type="button" onclick="addTransaction()" disabled>Add Transaction</button>
     </form>
 
