@@ -21,3 +21,8 @@ ul {
 #success {
   display: none;
 }
+
+/* Definitely temporary */
+label {
+  display: block;
+}

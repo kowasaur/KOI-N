@@ -1,9 +1,9 @@
 -- Make a database with this
 
--- Update this whenever they open the app
 CREATE TABLE coins (
-	ticker TEXT not null,
-	id TEXT not null
+	id TEXT not null,
+	symbol TEXT not null,
+	name TEXT
 );
 
 -- CREATE TABLE portfolio (
@@ -11,19 +11,21 @@ CREATE TABLE coins (
 -- )
 
 CREATE TABLE transactions  (
-	id TEXT not null,
+	id TEXT,
 	type TEXT not null,
-	amount NUMBER not null,
+	amount NUMBER,
 	otherParty TEXT,
 	date DATETIME,
-	counterCurrency TEXT,
+	counterCurrencyId TEXT,
 	counterCurrencyAmount NUMBER,
 	feeAmount NUMBER,
-	feeCurrency TEXT,
+	feeCurrencyId TEXT,
 	link TEXT,
-	fromWallet TEXT,
+	wallet TEXT,
 	note TEXT,
-	orderCreated TEXT,
-	-- maybe get rid of this
-	fiatValue TEXT
+	dateOpened DATETIME,
+	fiatValue NUMBER,
+	fiatValue2 NUMBER,
+	LPtokenId TEXT,
+	LPtokenAmount NUMBER
 );

@@ -10,16 +10,14 @@
       <a href="">View Transactions</a>
       <a href="">Add Transaction</a>
     </header>
-    <form oninput="checkFilled()">
-      <label for="id">Currency</label>
-      <input type="text" name="id" id="id" placeholder="bitcoin">
-
-      <label for="type">Type</label>
+    <form oninput="check()">
+      <!-- <label for="type">Type</label> -->
       <select name="type" id="type">
         <option value="buy">Buy</option>
         <option value="sell">Sell</option>
         <option value="receive">Receive</option>
         <option value="move">Move</option>
+        <option value="fee">Fee</option>
         <option value="deposit">Deposit</option>
         <option value="withdraw">Withdraw</option>
         <option value="provide-liquidity">Provide Liquidity</option>
@@ -27,9 +25,43 @@
         <option value="long">Long</option>
         <option value="short">Short</option>
       </select>
-      
+
+      <label for="id">Currency</label>
+      <input type="text" name="id" id="id" placeholder="bitcoin">
+
       <label for="amount">Amount</label>
       <input type="number" name="amount" id="amount" placeholder="0.052">
+
+      <label for="counterCurrencyId">Counter Currency</label>
+      <input type="text" name="counterCurrencyId" id="counterCurrencyId" placeholder="binance-usd">
+
+      <label for="counterCurrencyAmount">Counter Currency Amount</label>
+      <input type="number" name="counterCurrencyAmount" id="counterCurrencyAmount" placeholder="0">
+
+      <label for="otherParty">Other Party</label>
+      <input type="text" name="otherParty" id="otherParty" placeholder="Binance">
+
+      <label for="wallet">Wallet</label>
+      <input type="text" name="wallet" id="wallet" placeholder="0x236914f3e193dDEdFB4f02508d57a686Cf08bB06">
+
+      <label for="feeCurrencyId">Fee Currency</label>
+      <input type="text" name="feeCurrencyId" id="feeCurrencyId" placeholder="ethereum">
+
+      <label for="feeAmount">Fee Amount</label>
+      <input type="number" name="feeAmount" id="feeAmount" placeholder="0">
+
+      <label for="date">Date</label>
+      <input type="datetime-local" name="date" id="date">
+
+      <label for="link">Link</label>
+      <input type="text" name="link" id="link">
+
+      <!-- Make optional if date is input -->
+      <label for="fiatValue">Fiat Value</label>
+      <input type="number" name="fiatValue" id="fiatValue">
+
+      <label for="note">Note</label>
+      <input type="text" name="note" id="note">
 
       <button type="button" onclick="addTransaction()" disabled>Add Transaction</button>
     </form>

@@ -12,7 +12,7 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
   app.quit();
 }
 
-// Databse
+// Database
 var knex = require("knex")({
   client: "sqlite3",
   connection: { filename: path.join(__dirname, ".." ,"database.sqlite") },
@@ -29,10 +29,13 @@ const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 700,
     
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      // tbh I have no clue what to do here
+      // I just put it here so the warning would go away
+      contextIsolation: false
     }
   });
 

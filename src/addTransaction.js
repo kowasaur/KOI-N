@@ -6,7 +6,7 @@ function value(id) {
 }
 
 // Makes sure the user doesn't leave stuff blank that they shouldn't
-function checkFilled() {
+function check() {
     if (!!value("id") && !!value("amount") ) {
         document.querySelector('button').disabled = false
     } else {
@@ -19,7 +19,8 @@ function addTransaction() {
     var transaction = {
         id: value("id").toLowerCase(),
         type: value("type"),
-        amount: Number(value("amount"))
+        amount: Number(value("amount")),
+        otherParty: value("otherParty")
     };
     ipc.send("TransactionAdded", transaction)
 }

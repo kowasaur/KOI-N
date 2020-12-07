@@ -88,5 +88,5 @@ typings/
 # Electron-Forge
 out/
 
-# Reset database tool
-reset-database.py
+# Database
+database.sqlite
