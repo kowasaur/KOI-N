@@ -26,3 +26,7 @@ ul {
 label {
   display: block;
 }
+
+.required {
+  border: 1px solid red;
+}

@@ -5,9 +5,39 @@ function value(id) {
     return document.getElementById(id).value
 }
 
+var type = document.getElementById("type")
+
+required = ["type", "id", "amount", "fiatValue"]
+
+// Whenever the type changes
+function typeChange() {
+    switch (type.value) {
+        case "buy":
+        case "sell":
+            console.log("buy or sell");
+            required = ["type", "id", "amount", "fiatValue"]
+            break;
+        case "move":
+            console.log("move");
+            required = ["type", "id", "amount"]
+            break;
+        default:
+            console.log("Uh Oh Brokey");
+    }
+    // Removes required from everything that currently has it
+    oldRequireds = Array.from(document.getElementsByClassName("required"))
+    for (let i = 0; i < oldRequireds.length; i++) {
+        oldRequireds[i].classList.remove("required");
+    }
+    // Makes required required
+    for (let i = 0; i < required.length; i++) {
+        document.getElementById(required[i]).classList.add("required")
+    }
+}
+
 // Makes sure the user doesn't leave stuff blank that they shouldn't
 function check() {
-    if (!!value("id") && !!value("amount") ) {
+    if (required.map(id => value(id)).every(element => !!element)) {
         document.querySelector('button').disabled = false
     } else {
         document.querySelector('button').disabled = true

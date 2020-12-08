@@ -12,7 +12,7 @@
     </header>
     <form oninput="check()">
       <!-- <label for="type">Type</label> -->
-      <select name="type" id="type">
+      <select name="type" id="type" class="required" onchange="typeChange()">
         <option value="buy">Buy</option>
         <option value="sell">Sell</option>
         <option value="receive">Receive</option>
@@ -27,10 +27,10 @@
       </select>
 
       <label for="id">Currency</label>
-      <input type="text" name="id" id="id" placeholder="bitcoin">
+      <input type="text" name="id" id="id" placeholder="bitcoin" class="required">
 
       <label for="amount">Amount</label>
-      <input type="number" name="amount" id="amount" placeholder="0.052">
+      <input type="number" name="amount" id="amount" placeholder="0.052" class="required">
 
       <label for="counterCurrencyId">Counter Currency</label>
       <input type="text" name="counterCurrencyId" id="counterCurrencyId" placeholder="binance-usd">
@@ -58,7 +58,7 @@
 
       <!-- Make optional if date is input -->
       <label for="fiatValue">Fiat Value</label>
-      <input type="number" name="fiatValue" id="fiatValue">
+      <input type="number" name="fiatValue" id="fiatValue" placeholder="0" class="required">
 
       <label for="note">Note</label>
       <input type="text" name="note" id="note">
@@ -67,6 +67,8 @@
     </form>
 
     <div id="success">Transaction Added Succesfully</div>
+
+    <p>Boxes with red border are required</p>
 
     <script src="addTransaction.js"></script>
   </body>

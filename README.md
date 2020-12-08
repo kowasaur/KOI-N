@@ -16,6 +16,7 @@
 - Maybe make a refresh button (prices)
     - I think this may be unnecessary, depends how slow loading it every time is
 - Make value and invested accurate
+- Make option to not include receives in value and profit
 
 ### Add Transaction
 - Make the currency box in addTransaction.html searchable and only allow specific coins (using select2 or selectize)
@@ -31,6 +32,7 @@
 - Might have to make `addTransaction.js` make empty values NULL instead of ''
 - Make clear button that removes all input values
 - Make the currency for deposits and withdraws read only for AUD for now
+- Maybe make `check()` wait for `typeChange()` to run so that it's accurate
 
 ### Transactions
 - Ability to export transactions and portfolio as sheets? (csv?)
@@ -61,6 +63,10 @@
 - If I'm gonna have multiple .md files, move this and the others to docs/
 
 ## Sources
-Starting from when this was committed (7/12/2020), I put anything that helped me here. (I might move this to it's own doc later on)
+Starting from when this was committed (7/12/2020), I put anything that helped me here ~~that I remember~~. (I might move this to it's own doc later on)
 - https://stackoverflow.com/questions/32621988/electron-jquery-is-not-defined/37480521#37480521
 - https://developer.mozilla.org/en-US/docs/Archive/Mozilla/XUL/Attribute/readonly
+- https://stackoverflow.com/questions/195951/how-can-i-change-an-elements-class-with-javascript
+- https://stackoverflow.com/questions/22754315/for-loop-for-htmlcollection-elements
+- https://www.freecodecamp.org/news/manipulating-arrays-in-javascript/
+- https://stackoverflow.com/questions/44813732/how-do-i-check-if-all-elements-of-an-array-are-null
