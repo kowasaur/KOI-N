@@ -8,7 +8,7 @@ function value(id) {
 var id = document.getElementById("id")
 var type = document.getElementById("type")
 
-required = ["type", "id", "amount", "fiatValue"]
+required = ["type", "id", "amount", "fiatValue", "counterCurrencyId", "counterCurrencyAmount"]
 
 // Whenever the type changes
 function typeChange() {
@@ -18,11 +18,17 @@ function typeChange() {
         case "buy":
         case "sell":
             console.log("buy or sell");
+            required = ["type", "id", "amount", "fiatValue", "counterCurrencyId", "counterCurrencyAmount"]
+            break;
+        case "receive":
             required = ["type", "id", "amount", "fiatValue"]
             break;
         case "move":
             console.log("move");
             required = ["type", "id", "amount"]
+            break;
+        case "fee":
+            required = ["type", "feeCurrencyId", "feeAmount", "fiatValue"]
             break;
         case "deposit":
         case "withdraw":
@@ -59,11 +65,11 @@ function addTransaction() {
         id: value("id").toLowerCase(),
         type: value("type"),
         amount: Number(value("amount")),
-        otherParty: value("otherParty"),
+        otherParty: value("otherParty").toLowerCase(),
         date: value("date"),
-        counterCurrencyId: value("counterCurrencyId"),
+        counterCurrencyId: value("counterCurrencyId").toLowerCase(),
         counterCurrencyAmount: Number(value("counterCurrencyAmount")),
-        feeCurrencyId: value("feeCurrencyId"),
+        feeCurrencyId: value("feeCurrencyId").toLowerCase(),
         feeAmount: Number(value("feeAmount")),
         link: value("link"),
         wallet: value("wallet"),

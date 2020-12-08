@@ -43,13 +43,15 @@
     - ERC20 tokens. (Have token address)
 - Make a thing that figures out your taxes
 - Make it so you can change currency (not just AUD)
+- Import exchange transactions
+- Backup button that download or opens the folder to database.sqlite
 
 ### Miscellaneous
 - Make `database.sqlite` in AppData or something and create the file if it doesn't exist
     - also maybe allow for importing of database files
     - make it so in the portable version, the database is in the same folder as everything else
 - Remove all console.logs() when I finish
-- Make SQL queries not raw and actually use knex like your supposed to
+- Make SQL queries not raw and actually use knex like you're supposed to
 - Change the default menu bar
 - Maybe have query results stored in a variable somewhere so it doesn't have to reload everything every time you click home.
 
@@ -60,6 +62,7 @@
 - Put thing in readme (maybe elsewhere) on what this has been tested on
 - Make doc with database column name equivalent of what the user sees
 - If I'm gonna have multiple .md files, move this and the others to docs/
+- Have somewhere the importance of backing up since this is stored locally
 
 ## Sources
 Starting from when this was committed (7/12/2020), I put anything that helped me here ~~that I remember~~. (I might move this to it's own doc later on)
