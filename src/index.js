@@ -104,6 +104,13 @@ const createWindow = () => {
     });
     
   });
+
+  // When viewTransactions.html loaded
+  ipcMain.on("viewTransactionsLoaded", () => {
+    knex.select().table('transactions').then((result) => {
+      mainWindow.webContents.send("transactionsQueried", result);
+    })
+  })
 };
 
 // This method will be called when Electron has finished

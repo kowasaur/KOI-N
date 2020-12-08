@@ -1,12 +1,6 @@
 const electron = require("electron");
+const appendElement = require("./modules/loadTable.js");
 const ipc = electron.ipcRenderer;
-
-function appendElement(element, parent, content) {
-    element = document.createElement(element);
-    element.innerHTML = content || '';
-    parent.appendChild(element);
-    return element;
-}
 
 document.addEventListener("DOMContentLoaded",  () => ipc.send("mainWindowLoaded"));
 
@@ -19,9 +13,9 @@ ipc.on("totalGenerated", (evt, total) => {
 })
 
 ipc.on("portfolioGenerated", (evt, portfolio) => {
-    const table = document.querySelector('tbody')
+    const tbody = document.querySelector('tbody')
     for (let i = 0; i < portfolio.length; i++) {
-        const row = appendElement("tr", table)
+        const row = appendElement("tr", tbody)
         const currency = portfolio[i];
         const keys = Object.keys(currency);
         keys.forEach((key) => {
