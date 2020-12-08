@@ -48,14 +48,14 @@ const createWindow = () => {
   // Database stuff
   ipcMain.on("mainWindowLoaded", () => {  
     
-    knex.schema.raw("select id, sum(amount) as amount from (select id, sum(amount) as amount from transactions WHERE type = 'buy' GROUP BY id UNION select id, -sum(amount) as amount from transactions WHERE type = 'sell' GROUP BY id) GROUP  BY id").then(async (result) => {
+    knex.schema.raw("select id, sum(amount) as amount, sum(fiatValue) as fiatValue from (select id, sum(amount) as amount, sum(fiatValue) as fiatValue from transactions WHERE type = 'buy' GROUP BY id UNION  select id, -sum(amount) as amount, -sum(fiatValue) as fiatValue  from transactions WHERE type = 'sell' GROUP BY id) GROUP  BY id").then(async (result) => {
       var coins = {};
       for (let i = 0; i < result.length; i++) {
         id = result[i]['id']
         amount = result[i]['amount']
+        invested = result[i]['fiatValue']
         if (id !== 'aud') {
-          // ids.push(id)
-          coins[id] = amount
+          coins[id] = [amount, invested]
         }
       }
 
@@ -64,15 +64,18 @@ const createWindow = () => {
       portfolio = []
       var totalValue = 0;
       for (let i = 0; i < marketData.length; i++) {
-        let value = marketData[i].current_price * coins[marketData[i].id]
+        const amount = coins[marketData[i].id][0]
+        const value = marketData[i].current_price * amount
+        const invested = coins[marketData[i].id][1]
+        const $profit = value - invested
         portfolio.push({
           image: marketData[i].image,
           coin: marketData[i].name,
-          amount: coins[marketData[i].id],
+          amount: amount,
           value: formatter.format(value),
-          invested: "",
-          $profit: "",
-          percent_profit: ""
+          invested: formatter.format(invested),
+          $profit: formatter.format($profit),
+          percent_profit: `${($profit / invested * 100).toFixed(2)}%`
         });
         totalValue += value;
       }
@@ -81,7 +84,7 @@ const createWindow = () => {
       // Whole Portfolio
       knex.schema.raw("SELECT (SELECT ifnull(sum(amount), 0) FROM transactions WHERE type = 'deposit') - (SELECT ifnull(sum(amount),0)FROM transactions WHERE type='withdraw') as 'invested'").then((result)=>{
         const invested = result[0]['invested']
-        let $profit = totalValue - invested
+        const $profit = totalValue - invested
         let total = {
           value: formatter.format(totalValue),
           invested: formatter.format(invested),
@@ -91,8 +94,6 @@ const createWindow = () => {
         mainWindow.webContents.send("totalGenerated", total);
       })
     })
-    // Whole Portfolio
-    // .then()
 
   });
   // When a user clicks Add Transaction, this is called

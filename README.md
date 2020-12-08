@@ -15,6 +15,7 @@
     - Or maybe don't but make sure it's right aligned
 - Maybe make a refresh button (prices)
     - I think this may be unnecessary, depends how slow loading it every time is
+- Make value and invested accurate
 
 ### Add Transaction
 - Make the currency box in addTransaction.html searchable and only allow specific coins (using select2 or selectize)
@@ -57,6 +58,7 @@
 - Have Powered by CoinGecko (https://www.coingecko.com/en/branding) in Electron > About KOI-N as well as readme
 - Put thing in readme (maybe elsewhere) on what this has been tested on
 - Make doc with database column name equivalent of what the user sees
+- If I'm gonna have multiple .md files, move this and the others to docs/
 
 ## Sources
 Starting from when this was committed (7/12/2020), I put anything that helped me here. (I might move this to it's own doc later on)

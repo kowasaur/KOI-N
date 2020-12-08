@@ -1,15 +1,5 @@
 -- Make a database with this
 
-CREATE TABLE coins (
-	id TEXT not null,
-	symbol TEXT not null,
-	name TEXT
-);
-
--- CREATE TABLE portfolio (
-
--- )
-
 CREATE TABLE transactions  (
 	id TEXT,
 	type TEXT not null,

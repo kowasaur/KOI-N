@@ -20,7 +20,16 @@ function addTransaction() {
         id: value("id").toLowerCase(),
         type: value("type"),
         amount: Number(value("amount")),
-        otherParty: value("otherParty")
+        otherParty: value("otherParty"),
+        date: value("date"),
+        counterCurrencyId: value("counterCurrencyId"),
+        counterCurrencyAmount: Number(value("counterCurrencyAmount")),
+        feeCurrencyId: value("feeCurrencyId"),
+        feeAmount: Number(value("feeAmount")),
+        link: value("link"),
+        wallet: value("wallet"),
+        note: value("link"),
+        fiatValue: value("fiatValue")
     };
     ipc.send("TransactionAdded", transaction)
 }
