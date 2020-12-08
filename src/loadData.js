@@ -1,16 +1,5 @@
 const electron = require("electron");
 const ipc = electron.ipcRenderer;
-const CoinGecko = require('coingecko-api');
-const CoinGeckoClient = new CoinGecko();
-
-async function coingecko() {
-    // let data = await CoinGeckoClient.coins.fetch('bitcoin', {tickers: false, community_data: false, developer_data: false, localization: false});
-    // let data = await CoinGeckoClient.coins.markets({vs_currency: 'aud', ids: 'bitcoin, ethereum, stellar'})
-    // console.log(data.data.market_data.current_price.aud);
-    // console.log(data.data[0].current_price);
-    let data = await CoinGeckoClient.coins.markets({vs_currency: 'aud', ids: 'bitcoin, ethereum, litecoin'})
-    return data.data
-}
 
 function appendElement(element, parent, content) {
     element = document.createElement(element);
@@ -30,7 +19,6 @@ ipc.on("totalGenerated", (evt, total) => {
 })
 
 ipc.on("portfolioGenerated", (evt, portfolio) => {
-    // console.log(portfolio);
     const table = document.querySelector('tbody')
     for (let i = 0; i < portfolio.length; i++) {
         const row = appendElement("tr", table)
@@ -45,7 +33,6 @@ ipc.on("portfolioGenerated", (evt, portfolio) => {
                 }
                 appendElement("td", row, content)
             }
-            // console.log(`${key}: ${currency[key]}`);
         })
     }
 })
