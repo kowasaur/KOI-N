@@ -5,12 +5,15 @@ function value(id) {
     return document.getElementById(id).value
 }
 
+var id = document.getElementById("id")
 var type = document.getElementById("type")
 
 required = ["type", "id", "amount", "fiatValue"]
 
 // Whenever the type changes
 function typeChange() {
+    id.disabled = false
+    id.value = ""
     switch (type.value) {
         case "buy":
         case "sell":
@@ -20,6 +23,12 @@ function typeChange() {
         case "move":
             console.log("move");
             required = ["type", "id", "amount"]
+            break;
+        case "deposit":
+        case "withdraw":
+            required = ["type", "id", "amount"]
+            id.value = "aud"
+            id.disabled = true
             break;
         default:
             console.log("Uh Oh Brokey");

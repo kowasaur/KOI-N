@@ -24,15 +24,14 @@
 - Make button to hide `Transaction Added Successfully` (little x)
 - Have question marks you can hover over that explain stuff
     - This could be for other parts of the app too
-- Make required boxes stand out (like have an asterisk or red border)
 - Make placeholder text lighter so that it is more distinguisable
 - Maybe make drop down with things user has put before 
     - e.g. in exchange it has binance as an option if they've put it there before
 - Add support for payments (sending)
 - Might have to make `addTransaction.js` make empty values NULL instead of ''
 - Make clear button that removes all input values
-- Make the currency for deposits and withdraws read only for AUD for now
 - Maybe make `check()` wait for `typeChange()` to run so that it's accurate
+- Fiat value not required if date input
 
 ### Transactions
 - Ability to export transactions and portfolio as sheets? (csv?)
