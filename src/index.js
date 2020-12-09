@@ -54,7 +54,9 @@ const createWindow = () => {
     UNION  
     select id, -sum(amount) as amount, -sum(fiatValue) as fiatValue  from transactions WHERE type = 'sell' GROUP BY id
     UNION
-    SELECT counterCurrencyId as 'id', -sum(counterCurrencyAmount + feeAmount) as 'amount' , -sum(fiatValue + feeatValue) as 'fiatValue' FROM transactions WHERE type = 'buy' GROUP BY id )
+    SELECT counterCurrencyId as 'id', -sum(counterCurrencyAmount + feeAmount) as 'amount' , -sum(fiatValue + feeatValue) as 'fiatValue' FROM transactions WHERE type = 'buy' GROUP BY id 
+	UNION
+	SELECT feeCurrencyId as 'id', -sum(feeAmount) as  'amount', 0 as 'fiatValue' FROM transactions WHERE type = 'fee' GROUP BY id)
     GROUP  BY id`).then(async (result) => {
       var coins = {};
       for (let i = 0; i < result.length; i++) {

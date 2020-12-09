@@ -28,7 +28,7 @@ function typeChange() {
             required = ["type", "id", "amount"]
             break;
         case "fee":
-            required = ["type", "feeCurrencyId", "feeAmount", "fiatValue"]
+            required = ["type", "feeCurrencyId", "feeAmount", "feeatValue"]
             break;
         case "deposit":
         case "withdraw":
@@ -71,6 +71,7 @@ function addTransaction() {
         counterCurrencyAmount: Number(value("counterCurrencyAmount")),
         feeCurrencyId: value("feeCurrencyId").toLowerCase(),
         feeAmount: Number(value("feeAmount")),
+        feeatValue: Number(value("feeatValue")),
         link: value("link"),
         wallet: value("wallet"),
         note: value("note"),

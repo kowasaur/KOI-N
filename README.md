@@ -55,6 +55,7 @@
 - Make SQL queries not raw and actually use knex like you're supposed to
 - Change the default menu bar
 - Maybe have query results stored in a variable somewhere so it doesn't have to reload everything every time you click home.
+- I think my code might not work properly if the fee is different to the counter currency
 
 ### Readme / About
 - Add support thing (addresses to donate to) in readme and about (like this https://github.com/SpiralDevelopment/CryptoTracker#support)
