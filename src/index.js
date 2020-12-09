@@ -56,8 +56,10 @@ const createWindow = () => {
     UNION
     SELECT counterCurrencyId as 'id', -sum(counterCurrencyAmount + feeAmount) as 'amount' , -sum(fiatValue + feeatValue) as 'fiatValue' FROM transactions WHERE type = 'buy' GROUP BY id 
 	UNION
-	SELECT feeCurrencyId as 'id', -sum(feeAmount) as  'amount', 0 as 'fiatValue' FROM transactions WHERE type = 'fee' GROUP BY id)
-    GROUP  BY id`).then(async (result) => {
+	SELECT feeCurrencyId as 'id', -sum(feeAmount) as  'amount', 0 as 'fiatValue' FROM transactions WHERE type = 'fee' GROUP BY id
+	UNION 
+	SELECT id, sum(amount) as amount, 0 as 'fiatValue' FROM transactions WHERE type = 'receive' GROUP BY id
+    )GROUP  BY id`).then(async (result) => {
       var coins = {};
       for (let i = 0; i < result.length; i++) {
         id = result[i]['id']
@@ -70,7 +72,6 @@ const createWindow = () => {
       marketData  = marketData.data
       portfolio = []
       var totalValue = 0;
-      var totalInvested = 0;
       for (let i = 0; i < marketData.length; i++) {
         const amount = coins[marketData[i].id][0]
         const value = marketData[i].current_price * amount
@@ -86,7 +87,6 @@ const createWindow = () => {
           percent_profit: `${($profit / invested * 100).toFixed(2)}%`
         });
         totalValue += value;
-        totalInvested += invested;
       }
       // AUD
       portfolio.push({
@@ -99,18 +99,20 @@ const createWindow = () => {
         percent_profit: 'n/a'
       })
       totalValue += coins['aud'][0]
-      totalInvested += coins['aud'][0]
       mainWindow.webContents.send("portfolioGenerated", portfolio)
       
       // Whole Portfolio
-      const $profit = totalValue - totalInvested
-      let total = {
-        value: formatter.format(totalValue),
-        invested: formatter.format(totalInvested),
-        $profit: formatter.format($profit),
-        percent_profit: `${($profit / totalInvested * 100).toFixed(2)}%`
-      }
-      mainWindow.webContents.send("totalGenerated", total);
+      knex.schema.raw("SELECT (SELECT ifnull(sum(amount), 0) FROM transactions WHERE type = 'deposit') - (SELECT ifnull(sum(amount),0)FROM transactions WHERE type='withdraw') as 'invested'").then((result)=>{
+        const invested = result[0]['invested']
+        const $profit = totalValue - invested
+        let total = {
+          value: formatter.format(totalValue),
+          invested: formatter.format(invested),
+          $profit: formatter.format($profit),
+          percent_profit: `${($profit / invested * 100).toFixed(2)}%`
+        }
+        mainWindow.webContents.send("totalGenerated", total);
+      })
     })
 
   });

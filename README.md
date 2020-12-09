@@ -69,6 +69,8 @@
 ## How It Works
 (I'll finish this later)
 Fees are included in the amount invested in a coin
+### Invested
+Say you put $500 into bitcoin. The price then doubles and you sell half of it. Your 'invested' is now $250. 
 
 ## Sources
 Starting from when this was committed (7/12/2020), I put anything that helped me here ~~that I remember~~. (I might move this to it's own doc later on)

@@ -75,7 +75,7 @@ function addTransaction() {
         link: value("link"),
         wallet: value("wallet"),
         note: value("note"),
-        fiatValue: value("fiatValue")
+        fiatValue: Number(value("fiatValue"))
     };
     ipc.send("TransactionAdded", transaction)
 }
