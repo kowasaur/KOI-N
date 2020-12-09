@@ -73,7 +73,7 @@ function addTransaction() {
         feeAmount: Number(value("feeAmount")),
         link: value("link"),
         wallet: value("wallet"),
-        note: value("link"),
+        note: value("note"),
         fiatValue: value("fiatValue")
     };
     ipc.send("TransactionAdded", transaction)
