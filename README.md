@@ -65,6 +65,10 @@
 - If I'm gonna have multiple .md files, move this and the others to docs/
 - Have somewhere the importance of backing up since this is stored locally
 
+## How It Works
+(I'll finish this later)
+Fees are included in the amount invested in a coin
+
 ## Sources
 Starting from when this was committed (7/12/2020), I put anything that helped me here ~~that I remember~~. (I might move this to it's own doc later on)
 - https://stackoverflow.com/questions/32621988/electron-jquery-is-not-defined/37480521#37480521

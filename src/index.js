@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+const toDecimals  = require('round-to-decimal');
 
 const CoinGecko = require('coingecko-api');
 const CoinGeckoClient = new CoinGecko();
@@ -48,7 +49,13 @@ const createWindow = () => {
   // Database stuff
   ipcMain.on("mainWindowLoaded", () => {  
     
-    knex.schema.raw("select id, sum(amount) as amount, sum(fiatValue) as fiatValue from (select id, sum(amount) as amount, sum(fiatValue) as fiatValue from transactions WHERE type = 'buy' OR type = 'deposit' GROUP BY id UNION  select id, -sum(amount) as amount, -sum(fiatValue) as fiatValue  from transactions WHERE type = 'sell' GROUP BY id UNION SELECT counterCurrencyId as 'id', -sum(counterCurrencyAmount) as 'amount' , -sum(fiatValue) as 'fiatValue' FROM transactions WHERE type = 'buy') GROUP  BY id").then(async (result) => {
+    knex.schema.raw(`select id, sum(amount) as amount, sum(fiatValue) as fiatValue from 
+    (select id, sum(amount) as amount, sum(fiatValue + ifnull(feeatValue, 0)) as fiatValue from transactions WHERE type = 'buy' OR type = 'deposit' GROUP BY id 
+    UNION  
+    select id, -sum(amount) as amount, -sum(fiatValue) as fiatValue  from transactions WHERE type = 'sell' GROUP BY id
+    UNION
+    SELECT counterCurrencyId as 'id', -sum(counterCurrencyAmount + feeAmount) as 'amount' , -sum(fiatValue + feeatValue) as 'fiatValue' FROM transactions WHERE type = 'buy' GROUP BY id )
+    GROUP  BY id`).then(async (result) => {
       var coins = {};
       for (let i = 0; i < result.length; i++) {
         id = result[i]['id']
@@ -61,6 +68,7 @@ const createWindow = () => {
       marketData  = marketData.data
       portfolio = []
       var totalValue = 0;
+      var totalInvested = 0;
       for (let i = 0; i < marketData.length; i++) {
         const amount = coins[marketData[i].id][0]
         const value = marketData[i].current_price * amount
@@ -69,13 +77,14 @@ const createWindow = () => {
         portfolio.push({
           image: marketData[i].image,
           coin: marketData[i].name,
-          amount: amount,
+          amount: toDecimals(amount, 6),
           value: formatter.format(value),
           invested: formatter.format(invested),
           $profit: formatter.format($profit),
           percent_profit: `${($profit / invested * 100).toFixed(2)}%`
         });
         totalValue += value;
+        totalInvested += invested;
       }
       // AUD
       portfolio.push({
@@ -88,20 +97,18 @@ const createWindow = () => {
         percent_profit: 'n/a'
       })
       totalValue += coins['aud'][0]
+      totalInvested += coins['aud'][0]
       mainWindow.webContents.send("portfolioGenerated", portfolio)
       
       // Whole Portfolio
-      knex.schema.raw("SELECT (SELECT ifnull(sum(amount), 0) FROM transactions WHERE type = 'deposit') - (SELECT ifnull(sum(amount),0)FROM transactions WHERE type='withdraw') as 'invested'").then((result)=>{
-        const invested = result[0]['invested']
-        const $profit = totalValue - invested
-        let total = {
-          value: formatter.format(totalValue),
-          invested: formatter.format(invested),
-          $profit: formatter.format($profit),
-          percent_profit: `${($profit / invested * 100).toFixed(2)}%`
-        }
-        mainWindow.webContents.send("totalGenerated", total);
-      })
+      const $profit = totalValue - totalInvested
+      let total = {
+        value: formatter.format(totalValue),
+        invested: formatter.format(totalInvested),
+        $profit: formatter.format($profit),
+        percent_profit: `${($profit / totalInvested * 100).toFixed(2)}%`
+      }
+      mainWindow.webContents.send("totalGenerated", total);
     })
 
   });

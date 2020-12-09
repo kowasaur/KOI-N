@@ -10,6 +10,8 @@ CREATE TABLE transactions  (
 	counterCurrencyAmount NUMBER,
 	feeAmount NUMBER,
 	feeCurrencyId TEXT,
+	-- get it
+	feeatValue NUMBER,
 	link TEXT,
 	wallet TEXT,
 	note TEXT,
