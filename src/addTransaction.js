@@ -32,7 +32,7 @@ function typeChange() {
             break;
         case "deposit":
         case "withdraw":
-            required = ["type", "id", "amount"]
+            required = ["type", "id", "amount", "fiatValue"]
             id.value = "aud"
             id.disabled = true
             break;

@@ -48,15 +48,13 @@ const createWindow = () => {
   // Database stuff
   ipcMain.on("mainWindowLoaded", () => {  
     
-    knex.schema.raw("select id, sum(amount) as amount, sum(fiatValue) as fiatValue from (select id, sum(amount) as amount, sum(fiatValue) as fiatValue from transactions WHERE type = 'buy' GROUP BY id UNION  select id, -sum(amount) as amount, -sum(fiatValue) as fiatValue  from transactions WHERE type = 'sell' GROUP BY id) GROUP  BY id").then(async (result) => {
+    knex.schema.raw("select id, sum(amount) as amount, sum(fiatValue) as fiatValue from (select id, sum(amount) as amount, sum(fiatValue) as fiatValue from transactions WHERE type = 'buy' OR type = 'deposit' GROUP BY id UNION  select id, -sum(amount) as amount, -sum(fiatValue) as fiatValue  from transactions WHERE type = 'sell' GROUP BY id UNION SELECT counterCurrencyId as 'id', -sum(counterCurrencyAmount) as 'amount' , -sum(fiatValue) as 'fiatValue' FROM transactions WHERE type = 'buy') GROUP  BY id").then(async (result) => {
       var coins = {};
       for (let i = 0; i < result.length; i++) {
         id = result[i]['id']
         amount = result[i]['amount']
         invested = result[i]['fiatValue']
-        if (id !== 'aud') {
-          coins[id] = [amount, invested]
-        }
+        coins[id] = [amount, invested]
       }
 
       let marketData = await CoinGeckoClient.coins.markets({vs_currency: 'aud', ids: Object.keys(coins)})
@@ -79,6 +77,17 @@ const createWindow = () => {
         });
         totalValue += value;
       }
+      // AUD
+      portfolio.push({
+        image: "aus-flag.png",
+        coin: "AU Dollars",
+        amount: coins['aud'][0],
+        value: formatter.format(coins['aud'][0]),
+        invested: 'n/a',
+        $profit: 'n/a',
+        percent_profit: 'n/a'
+      })
+      totalValue += coins['aud'][0]
       mainWindow.webContents.send("portfolioGenerated", portfolio)
       
       // Whole Portfolio

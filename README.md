@@ -32,6 +32,7 @@
 - Make clear button that removes all input values
 - Maybe make `check()` wait for `typeChange()` to run so that it's accurate
 - Fiat value not required if date input
+- For deposits/withdrawls, make fiat value the same as amount
 
 ### Transactions
 - Ability to export transactions and portfolio as sheets? (csv?)
