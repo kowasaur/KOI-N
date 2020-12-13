@@ -80,7 +80,7 @@ const createWindow = () => {
         portfolio.push({
           image: marketData[i].image,
           coin: marketData[i].name,
-          amount: toDecimals(amount, 6),
+          amount: toDecimals(amount, 6).toString(),
           value: formatter.format(value),
           invested: formatter.format(invested),
           $profit: formatter.format($profit),
