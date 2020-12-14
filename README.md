@@ -11,7 +11,6 @@
     - Or maybe don't but make sure it's right aligned
 - Maybe make a refresh button (prices)
     - I think this may be unnecessary, depends how slow loading it every time is
-- Make value and invested accurate
 - Make option to not include receives in value and profit
 - Change how calculating "invested" works (from like an average to allowing the user to choose what specific transactions they are selling)
 
@@ -52,7 +51,6 @@
 - Make SQL queries not raw and actually use knex like you're supposed to
 - Change the default menu bar
 - Maybe have query results stored in a variable somewhere so it doesn't have to reload everything every time you click home.
-- I think my code might not work properly if the fee is different to the counter currency
 
 ### Readme / About
 - Add support thing (addresses to donate to) in readme and about (like this https://github.com/SpiralDevelopment/CryptoTracker#support)
@@ -77,3 +75,6 @@ Starting from when this was committed (7/12/2020), I put anything that helped me
 - https://stackoverflow.com/questions/22754315/for-loop-for-htmlcollection-elements
 - https://www.freecodecamp.org/news/manipulating-arrays-in-javascript/
 - https://stackoverflow.com/questions/44813732/how-do-i-check-if-all-elements-of-an-array-are-null
+- Flag images
+    - https://commons.wikimedia.org/wiki/File:Australia_flag_icon_round.svg
+    - https://commons.wikimedia.org/wiki/File:United-states_flag_icon_round.svg

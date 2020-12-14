@@ -145,7 +145,7 @@ const createWindow = () => {
       }
       // AUD
       portfolio.push({
-        image: "aus-flag.png",
+        image: "images/aus-flag.png",
         coin: "AU Dollars",
         amount: txPortfolio['aud'].amount,
         value: formatter.format(txPortfolio['aud'].amount),
