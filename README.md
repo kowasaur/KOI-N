@@ -5,18 +5,15 @@
 - When you click on a coin, it shows your transactions for that coins and profit, etc
     - Show average buy in and average sell out
 - https://htmldom.dev/sort-a-table-by-clicking-its-headers/
+    - Make it sort by value by default
 - Make text green if profit and red if loss
 - Maybe make both profits in the same box
-- Make prices round like:
-    - $25,512
-    - $787.35
-    - $17.612
-    - $1,532.1
     - Or maybe don't but make sure it's right aligned
 - Maybe make a refresh button (prices)
     - I think this may be unnecessary, depends how slow loading it every time is
 - Make value and invested accurate
 - Make option to not include receives in value and profit
+- Change how calculating "invested" works (from like an average to allowing the user to choose what specific transactions they are selling)
 
 ### Add Transaction
 - Make the currency box in addTransaction.html searchable and only allow specific coins (using select2 or selectize)

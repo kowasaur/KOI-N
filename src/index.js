@@ -29,7 +29,7 @@ const formatter = new Intl.NumberFormat('en-AU', {
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
+    width: 600,
     height: 700,
     
     webPreferences: {
@@ -49,33 +49,88 @@ const createWindow = () => {
   // Database stuff
   ipcMain.on("mainWindowLoaded", () => {  
     
-    knex.schema.raw(`select id, sum(amount) as amount, sum(fiatValue) as fiatValue from 
-    (select id, sum(amount) as amount, sum(fiatValue + ifnull(feeatValue, 0)) as fiatValue from transactions WHERE type = 'buy' OR type = 'deposit' GROUP BY id 
-    UNION  
-    select id, -sum(amount) as amount, -sum(fiatValue) as fiatValue  from transactions WHERE type = 'sell' GROUP BY id
-    UNION
-    SELECT counterCurrencyId as 'id', -sum(counterCurrencyAmount + feeAmount) as 'amount' , -sum(fiatValue + feeatValue) as 'fiatValue' FROM transactions WHERE type = 'buy' GROUP BY id 
-	UNION
-	SELECT feeCurrencyId as 'id', -sum(feeAmount) as  'amount', 0 as 'fiatValue' FROM transactions WHERE type = 'fee' GROUP BY id
-	UNION 
-	SELECT id, sum(amount) as amount, 0 as 'fiatValue' FROM transactions WHERE type = 'receive' GROUP BY id
-    )GROUP  BY id`).then(async (result) => {
-      var coins = {};
-      for (let i = 0; i < result.length; i++) {
-        id = result[i]['id']
-        amount = result[i]['amount']
-        invested = result[i]['fiatValue']
-        coins[id] = [amount, invested]
-      }
+    knex.select().from('transactions')
+    .then(async result => {
+      txPortfolio = {};
+      result.forEach(tx => {
+        // for fees
+        if (tx.id !== '') {
+          let coin = txPortfolio[tx.id] || { amount: 0, invested: 0 }
+          // Amount
+          switch (tx.type) {
+            case 'sell':
+              tx.amount *= -1
+              tx.counterCurrencyAmount *= -1
+              tx.fiatValue *= -1
+            case 'buy':
+              var newAmount = coin.amount + tx.amount;
 
-      let marketData = await CoinGeckoClient.coins.markets({vs_currency: 'aud', ids: Object.keys(coins)})
+              let counterCoin = txPortfolio[tx.counterCurrencyId] || { amount: 0, invested: 0 }
+              txPortfolio[tx.counterCurrencyId] = {
+                amount: counterCoin.amount - tx.counterCurrencyAmount,
+                invested: counterCoin.invested - tx.fiatValue // change later
+              }
+              break;
+            case 'deposit':
+            case 'receive':
+              var newAmount = coin.amount + tx.amount;
+              break;
+            case 'withdraw':
+              var newAmount = coin.amount - tx.amount
+            default:
+              var newAmount = coin.amount;
+          }
+          // Invested
+          switch (tx.type) {
+            case 'deposit':
+            case 'buy':
+              var newInvested = coin.invested + tx.fiatValue
+              break;
+            case 'sell':
+              var newInvested = coin.invested - -tx.amount * coin.invested / coin.amount
+              break;
+            default:
+              var newInvested = coin.invested;
+          }
+          txPortfolio[tx.id] = {
+            amount: newAmount,
+            invested: newInvested
+          }
+        }
+
+        // Only executes if fee exists
+        if (!!tx.feeCurrencyId) {
+          let feeCoin = txPortfolio[tx.feeCurrencyId]
+          switch (tx.type) {
+            case 'buy':
+              txPortfolio[tx.id] = {
+                amount: txPortfolio[tx.id].amount,
+                invested: txPortfolio[tx.id].invested + tx.feeatValue
+              }
+            case 'sell':
+              newInvested = feeCoin.invested - tx.feeatValue
+              break;
+            default:
+              newInvested = feeCoin.invested
+          }
+
+          // Might wanna make this idiot proof (allow fees even if funds dont exist)
+          txPortfolio[tx.feeCurrencyId] = {
+            amount: feeCoin.amount - tx.feeAmount,
+            invested: newInvested
+          }
+        }
+
+      })
+
+      let marketData = await CoinGeckoClient.coins.markets({vs_currency: 'aud', ids: Object.keys(txPortfolio)})
       marketData  = marketData.data
       portfolio = []
       var totalValue = 0;
       for (let i = 0; i < marketData.length; i++) {
-        const amount = coins[marketData[i].id][0]
+        const amount = txPortfolio[marketData[i].id].amount
         const value = marketData[i].current_price * amount
-        const invested = coins[marketData[i].id][1]
+        const invested = txPortfolio[marketData[i].id].invested
         const $profit = value - invested
         portfolio.push({
           image: marketData[i].image,
@@ -92,13 +147,13 @@ const createWindow = () => {
       portfolio.push({
         image: "aus-flag.png",
         coin: "AU Dollars",
-        amount: coins['aud'][0],
-        value: formatter.format(coins['aud'][0]),
+        amount: txPortfolio['aud'].amount,
+        value: formatter.format(txPortfolio['aud'].amount),
         invested: 'n/a',
         $profit: 'n/a',
         percent_profit: 'n/a'
       })
-      totalValue += coins['aud'][0]
+      totalValue += txPortfolio['aud'].amount
       mainWindow.webContents.send("portfolioGenerated", portfolio)
       
       // Whole Portfolio

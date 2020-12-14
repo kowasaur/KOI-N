@@ -32,12 +32,12 @@ function typeChange() {
             break;
         case "deposit":
         case "withdraw":
-            required = ["type", "id", "amount", "fiatValue"]
+            required = ["type", "id", "amount"]
             id.value = "aud"
             id.disabled = true
             break;
         default:
-            console.log("Uh Oh Brokey");
+            console.error("Uh Oh Brokey");
     }
     // Removes required from everything that currently has it
     oldRequireds = Array.from(document.getElementsByClassName("required"))
