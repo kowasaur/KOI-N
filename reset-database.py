@@ -5,7 +5,10 @@ import sqlite3
 import os
 
 if input('Are you sure you want to reset the database? (Y/N): ').upper() in ['Y', 'YES']:
-    os.remove("database.sqlite")
+    try:
+        os.remove("database.sqlite")
+    except:
+        pass
     connection = sqlite3.connect("database.sqlite")
     cursor = connection.cursor()
 

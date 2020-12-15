@@ -27,8 +27,6 @@
 - Might have to make `addTransaction.js` make empty values NULL instead of ''
 - Make clear button that removes all input values
 - Maybe make `check()` wait for `typeChange()` to run so that it's accurate
-- Fiat value not required if date input
-- For deposits/withdrawls, make fiat value the same as amount
 
 ### Transactions
 - Ability to export transactions and portfolio as sheets? (csv?)
@@ -78,3 +76,5 @@ Starting from when this was committed (7/12/2020), I put anything that helped me
 - Flag images
     - https://commons.wikimedia.org/wiki/File:Australia_flag_icon_round.svg
     - https://commons.wikimedia.org/wiki/File:United-states_flag_icon_round.svg
+- https://stackoverflow.com/questions/28246788/convert-yyyy-mm-dd-to-mm-dd-yyyy-in-javascript/28246873
+- https://www.w3schools.com/jsref/jsref_includes_array.asp

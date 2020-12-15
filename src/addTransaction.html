@@ -51,14 +51,13 @@
       <input type="number" name="feeAmount" id="feeAmount" placeholder="0">
 
       <label for="date">Date</label>
-      <input type="datetime-local" name="date" id="date">
+      <input type="datetime-local" name="date" id="date" class="required">
 
       <label for="link">Link</label>
       <input type="text" name="link" id="link">
 
-      <!-- Make optional if date is input -->
       <label for="fiatValue">Fiat Value</label>
-      <input type="number" name="fiatValue" id="fiatValue" placeholder="0" class="required">
+      <input type="number" name="fiatValue" id="fiatValue" placeholder="0">
 
       <label for="feeatValue">Fee Fiat Value</label>
       <input type="number" name="feeatValue" id="feeatValue">
@@ -71,7 +70,7 @@
 
     <div id="success">Transaction Added Succesfully</div>
 
-    <p style="color:red">Boxes with a red border are required <br> Please add transactions in chronological order</p>
+    <p style="color:red">Boxes with a red border are required</p>
 
     <script src="addTransaction.js"></script>
   </body>

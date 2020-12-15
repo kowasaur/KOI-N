@@ -8,7 +8,7 @@ function value(id) {
 var id = document.getElementById("id")
 var type = document.getElementById("type")
 
-required = ["type", "id", "amount", "fiatValue", "counterCurrencyId", "counterCurrencyAmount"]
+required = ["type", "id", "amount", "date", "counterCurrencyId", "counterCurrencyAmount"]
 
 // Whenever the type changes
 function typeChange() {
@@ -17,18 +17,16 @@ function typeChange() {
     switch (type.value) {
         case "buy":
         case "sell":
-            console.log("buy or sell");
-            required = ["type", "id", "amount", "fiatValue", "counterCurrencyId", "counterCurrencyAmount"]
+            required = ["type", "id", "amount", "date", "counterCurrencyId", "counterCurrencyAmount"]
             break;
         case "receive":
-            required = ["type", "id", "amount", "fiatValue"]
+            required = ["type", "id", "amount", "date"]
             break;
         case "move":
-            console.log("move");
             required = ["type", "id", "amount"]
             break;
         case "fee":
-            required = ["type", "feeCurrencyId", "feeAmount", "feeatValue"]
+            required = ["type", "feeCurrencyId", "feeAmount", "date"]
             break;
         case "deposit":
         case "withdraw":

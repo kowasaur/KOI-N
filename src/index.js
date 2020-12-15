@@ -3,6 +3,7 @@ const path = require('path');
 const toDecimals  = require('round-to-decimal');
 
 const CoinGecko = require('coingecko-api');
+const { count } = require('console');
 const CoinGeckoClient = new CoinGecko();
 
 // Enable live reload for front end and back end
@@ -25,6 +26,13 @@ const formatter = new Intl.NumberFormat('en-AU', {
   style: 'currency',
   currency: 'AUD'
 });
+
+// Converts yyyy-mm-dd to dd-mm-yyyy
+function formatDate(inputDate) {
+  var date = new Date(inputDate);
+  // Months use 0 index.
+  return date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
+}
 
 const createWindow = () => {
   // Create the browser window.
@@ -49,7 +57,7 @@ const createWindow = () => {
   // Database stuff
   ipcMain.on("mainWindowLoaded", () => {  
     
-    knex.select().from('transactions')
+    knex.select().from('transactions').orderBy('date')
     .then(async result => {
       txPortfolio = {};
       result.forEach(tx => {
@@ -68,7 +76,7 @@ const createWindow = () => {
               let counterCoin = txPortfolio[tx.counterCurrencyId] || { amount: 0, invested: 0 }
               txPortfolio[tx.counterCurrencyId] = {
                 amount: counterCoin.amount - tx.counterCurrencyAmount,
-                invested: counterCoin.invested - tx.fiatValue // change later
+                invested: counterCoin.invested - tx.fiatValue *counterCoin.invested / counterCoin.amount // change this back if something's not working
               }
               break;
             case 'deposit':
@@ -77,6 +85,7 @@ const createWindow = () => {
               break;
             case 'withdraw':
               var newAmount = coin.amount - tx.amount
+              break;
             default:
               var newAmount = coin.amount;
           }
@@ -172,8 +181,33 @@ const createWindow = () => {
 
   });
   // When a user clicks Add Transaction, this is called
-  ipcMain.on("TransactionAdded", (evt, transaction) => {
+  ipcMain.on("TransactionAdded", async (evt, transaction) => {
     console.log(transaction);
+    if (transaction.fiatValue === 0 && ['buy', 'sell', 'receive'].includes(transaction.type)) {
+      switch (transaction.type) {
+        case 'receive':
+          var id = transaction.id
+          var amount = transaction.amount
+          break;
+        default:
+          var id = transaction.counterCurrencyId
+          var amount = transaction.counterCurrencyAmount
+      }
+      let data = await CoinGeckoClient.coins.fetchHistory(id, {
+        date: formatDate(transaction.date),
+        localization: false
+      });
+      console.log(data.data);
+      console.log(formatDate(transaction.date));
+      transaction['fiatValue'] = data.data.market_data.current_price.aud * amount
+    }
+    if (transaction.feeatValue === 0 && transaction.feeAmount > 0) {
+      let data = await CoinGeckoClient.coins.fetchHistory(transaction.feeCurrencyId, {
+        date: formatDate(transaction.date),
+        localization: false
+      });
+      transaction['feeatValue'] = data.data.market_data.current_price.aud * transaction.feeAmount
+    }
     knex('transactions').insert(transaction).then( () => {
       mainWindow.webContents.send("TransactionAddedSuccess");
     });
@@ -182,7 +216,7 @@ const createWindow = () => {
 
   // When viewTransactions.html loaded
   ipcMain.on("viewTransactionsLoaded", () => {
-    knex.select().table('transactions').then((result) => {
+    knex.select().table('transactions').orderBy('date').then((result) => {
       mainWindow.webContents.send("transactionsQueried", result);
     })
   })
