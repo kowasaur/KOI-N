@@ -42,6 +42,7 @@
 - Backup button that download or opens the folder to database.sqlite
 - Maybe make a dashboard thing that shows the performance of all your cryptos using https://www.coingecko.com/en/widgets/coin_price_chart_widget
 - https://www.coingecko.com/en/widgets/
+- Add settings / about page that has source for logo <a href="https://www.vecteezy.com/free-vector/abstract">Abstract Vectors by Vecteezy</a>
 
 ### Miscellaneous
 - Make `database.sqlite` in AppData or something and create the file if it doesn't exist
@@ -68,6 +69,7 @@ Fees are included in the amount invested in a coin
 Say you put $500 into bitcoin. The price then doubles and you sell half of it. Your 'invested' is now $250. 
 
 ## Sources
+The `N` in the KOI-N logo is modified version of [Fish KOI logo and symbol animal vector](https://www.vecteezy.com/vector-art/595538-fish-koi-logo-and-symbol-animal-vector) which is apart of [Abstract Vectors by Vecteezy](https://www.vecteezy.com/free-vector/abstract). The font used is [Otsutome](https://www.freejapanesefont.com/otsutome-font-download/)
 Starting from when this was committed (7/12/2020), I put anything that helped me here ~~that I remember~~. (I might move this to it's own doc later on)
 - https://stackoverflow.com/questions/32621988/electron-jquery-is-not-defined/37480521#37480521
 - https://developer.mozilla.org/en-US/docs/Archive/Mozilla/XUL/Attribute/readonly
