@@ -52,6 +52,7 @@
 - Make SQL queries not raw and actually use knex like you're supposed to
 - Change the default menu bar
 - Maybe have query results stored in a variable somewhere so it doesn't have to reload everything every time you click home.
+- Create custom scroll bar https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp
 
 ### Readme / About
 - Add support thing (addresses to donate to) in readme and about (like this https://github.com/SpiralDevelopment/CryptoTracker#support)
@@ -66,7 +67,8 @@
 (I'll finish this later)
 Fees are included in the amount invested in a coin
 ### Invested
-Say you put $500 into bitcoin. The price then doubles and you sell half of it. Your 'invested' is now $250. 
+Say you put $500 into bitcoin. The price then doubles and you sell half of it. Your 'invested' is now $250.  
+This amount is calculated on every sell with `o - so/b` where `o` is the old invested amount (AUD), `s` is the amount in crypto that is being sold, and `b` is the total balance of that crypto, prior to selling. 
 
 ## Sources
 The `N` in the KOI-N logo is modified version of [Fish KOI logo and symbol animal vector](https://www.vecteezy.com/vector-art/595538-fish-koi-logo-and-symbol-animal-vector) which is apart of [Abstract Vectors by Vecteezy](https://www.vecteezy.com/free-vector/abstract). The font used is [Otsutome](https://www.freejapanesefont.com/otsutome-font-download/)
