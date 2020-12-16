@@ -2,6 +2,7 @@ These are the original files created for the app.
 
 ### Colours
 Aqua: 6ac8ac  
+Light Blue: 008b92  
 Blue: 0002c3  
 Dark Blue: 15167c
 
