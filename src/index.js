@@ -34,6 +34,30 @@ function formatDate(inputDate) {
   return date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
 }
 
+// Checks whether date is today
+const isToday = (date) => {
+  const someDate = new Date(date)
+  const today = new Date()
+  return someDate.getDate() == today.getDate() &&
+    someDate.getMonth() == today.getMonth() &&
+    someDate.getFullYear() == today.getFullYear()
+}
+
+// Gets historical or current price
+async function getFiatValue(date, id, amount) {
+  const data = (!isToday(date)) ? await CoinGeckoClient.coins.fetchHistory(id, {
+    date: formatDate(date),
+    localization: false
+  }) : await CoinGeckoClient.coins.fetch(id, {
+    tickers: false,
+    community_data: false,
+    developer_data: false,
+    localization: false
+  });
+  const price = (data.data.market_data || {current_price: {aud: 0}}).current_price.aud
+  return price * amount
+}
+
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -193,20 +217,10 @@ const createWindow = () => {
           var id = transaction.counterCurrencyId
           var amount = transaction.counterCurrencyAmount
       }
-      let data = await CoinGeckoClient.coins.fetchHistory(id, {
-        date: formatDate(transaction.date),
-        localization: false
-      });
-      console.log(data.data);
-      console.log(formatDate(transaction.date));
-      transaction['fiatValue'] = data.data.market_data.current_price.aud * amount
+      transaction['fiatValue'] = await getFiatValue(transaction.date, id, amount)
     }
     if (transaction.feeatValue === 0 && transaction.feeAmount > 0) {
-      let data = await CoinGeckoClient.coins.fetchHistory(transaction.feeCurrencyId, {
-        date: formatDate(transaction.date),
-        localization: false
-      });
-      transaction['feeatValue'] = data.data.market_data.current_price.aud * transaction.feeAmount
+      transaction['feeatValue'] = await getFiatValue(transaction.date, transaction.feeCurrencyId, transaction.feeAmount)
     }
     knex('transactions').insert(transaction).then( () => {
       mainWindow.webContents.send("TransactionAddedSuccess");

@@ -40,6 +40,8 @@
 - Make it so you can change currency (not just AUD)
 - Import exchange transactions
 - Backup button that download or opens the folder to database.sqlite
+- Maybe make a dashboard thing that shows the performance of all your cryptos using https://www.coingecko.com/en/widgets/coin_price_chart_widget
+- https://www.coingecko.com/en/widgets/
 
 ### Miscellaneous
 - Make `database.sqlite` in AppData or something and create the file if it doesn't exist
@@ -78,3 +80,5 @@ Starting from when this was committed (7/12/2020), I put anything that helped me
     - https://commons.wikimedia.org/wiki/File:United-states_flag_icon_round.svg
 - https://stackoverflow.com/questions/28246788/convert-yyyy-mm-dd-to-mm-dd-yyyy-in-javascript/28246873
 - https://www.w3schools.com/jsref/jsref_includes_array.asp
+- https://flaviocopes.com/how-to-determine-date-is-today-javascript/
+- https://stackoverflow.com/questions/57007749/date-getdate-is-not-a-function-typescript
