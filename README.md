@@ -70,6 +70,9 @@ Fees are included in the amount invested in a coin
 Say you put $500 into bitcoin. The price then doubles and you sell half of it. Your 'invested' is now $250.  
 This amount is calculated on every sell with `o - so/b` where `o` is the old invested amount (AUD), `s` is the amount in crypto that is being sold, and `b` is the total balance of that crypto, prior to selling. 
 
+## coinspotIds.json
+**Note:** aud, ainslie-gold, and ainslie-silver are not on CoinGecko
+
 ## Sources
 The `N` in the KOI-N logo is modified version of [Fish KOI logo and symbol animal vector](https://www.vecteezy.com/vector-art/595538-fish-koi-logo-and-symbol-animal-vector) which is apart of [Abstract Vectors by Vecteezy](https://www.vecteezy.com/free-vector/abstract). The font used is [Otsutome](https://www.freejapanesefont.com/otsutome-font-download/)
 Starting from when this was committed (7/12/2020), I put anything that helped me here ~~that I remember~~. (I might move this to it's own doc later on)
@@ -86,3 +89,7 @@ Starting from when this was committed (7/12/2020), I put anything that helped me
 - https://www.w3schools.com/jsref/jsref_includes_array.asp
 - https://flaviocopes.com/how-to-determine-date-is-today-javascript/
 - https://stackoverflow.com/questions/57007749/date-getdate-is-not-a-function-typescript
+- https://stackoverflow.com/questions/21509474/subtract-arrays-javascript
+- https://stackoverflow.com/questions/18018928/issue-storing-arrays-in-sqlite-using-javascript
+- https://stackoverflow.com/questions/10865025/merge-flatten-an-array-of-arrays
+- https://stackoverflow.com/questions/1374126/how-to-extend-an-existing-javascript-array-with-another-array-without-creating

@@ -3,7 +3,6 @@ const path = require('path');
 const toDecimals  = require('round-to-decimal');
 
 const CoinGecko = require('coingecko-api');
-const { count } = require('console');
 const CoinGeckoClient = new CoinGecko();
 
 // Enable live reload for front end and back end
@@ -58,6 +57,91 @@ async function getFiatValue(date, id, amount) {
   return price * amount
 }
 
+/** Subtract arrays of objects */
+function subtractObjectArrays(largerArray, smallerArray) {
+  const hashObject = (object) => JSON.stringify(object);
+  const hashSet = new Set(smallerArray.map(hashObject))
+  return largerArray.filter(object => !hashSet.has(hashObject(object)))
+}
+
+async function asyncify(func, callback) {
+  return new Promise((resolve) => {
+    func(data => resolve(callback(data)))
+  })
+}
+
+knex('keys').pluck('exchange').then(result => {
+  if (result.includes('coinspot')) {
+    
+    knex('keys').first('key', 'secret', 'oldTxs').where('exchange', 'coinspot').then(async result => {
+      const coinspotIds = require('./modules/coinspotCoingeckoIds.json')
+      const Coinspot = require('coinspot-api');
+      const coinspotKey = result.key;
+      const coinspotSecret = result.secret;
+      const coinspotClient = new Coinspot(coinspotKey, coinspotSecret)
+
+      let txs = await asyncify(coinspotClient.referral, data => {
+        return data.payments.map(tx => tx = {
+          type: 'receive',
+          id: coinspotIds[tx.coin],
+          amount: tx.amount,
+          date: tx.timestamp,
+          otherParty: 'coinspot',
+          fiatValue: tx.audamount
+        })
+      });
+      txs = txs.concat(await asyncify(coinspotClient.depositHistory, data => {
+        return data.deposits.map(tx => tx = {
+          type: 'deposit',
+          date: tx.created,
+          otherParty: 'coinspot',
+          id: 'aud',
+          amount: tx.amount
+        })
+      }));
+      txs = txs.concat(await asyncify(coinspotClient.withdrawalHistory, data => {
+        return data.withdrawals.map(tx => tx = {
+          type: 'withdraw',
+          date: tx.created,
+          otherParty: 'coinspot',
+          id: 'aud',
+          amount: tx.amount
+        })
+      }));
+      txs = txs.concat(await asyncify(coinspotClient.transactions, data => {
+        let txs = data.buyorders.map(tx => tx = {
+          type: 'buy',
+          id: coinspotIds[tx.market.split('/')[0]],
+          amount: tx.amount,
+          counterCurrencyId: 'aud',
+          counterCurrencyAmount: tx.audtotal,
+          otherParty: 'coinspot',
+          date: tx.created, // since you can order, this means the date is wrong for some
+          fiatValue: tx.audtotal
+        })
+        return txs.concat(data.sellorders.map(tx => tx = {
+          type: 'sell',
+          id: coinspotIds[tx.market.split('/')[0]],
+          amount: tx.amount,
+          counterCurrencyId: coinspotIds[tx.market.split('/')[1]],
+          counterCurrencyAmount: tx.total,
+          otherParty: 'coinspot',
+          date: tx.created, // same as buy
+          fiatValue: tx.audtotal
+        }));
+      }));
+      const coinspotTransactions = txs.flat(); 
+      const oldTxs = JSON.parse(result.oldTxs)
+      const newTxs = subtractObjectArrays(coinspotTransactions, oldTxs)
+      if (newTxs.length > 0) {
+        knex('transactions').insert(newTxs).then(() => 
+          knex('keys').update('oldTxs', JSON.stringify(coinspotTransactions))).then()
+      }
+    })
+  }
+})
+
+
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -93,14 +177,13 @@ const createWindow = () => {
             case 'sell':
               tx.amount *= -1
               tx.counterCurrencyAmount *= -1
-              tx.fiatValue *= -1
             case 'buy':
               var newAmount = coin.amount + tx.amount;
 
               let counterCoin = txPortfolio[tx.counterCurrencyId] || { amount: 0, invested: 0 }
               txPortfolio[tx.counterCurrencyId] = {
                 amount: counterCoin.amount - tx.counterCurrencyAmount,
-                invested: counterCoin.invested - tx.fiatValue *counterCoin.invested / counterCoin.amount // change this back if something's not working
+                invested: counterCoin.invested - tx.amount *counterCoin.invested / counterCoin.amount // change this back if something's not working
               }
               break;
             case 'deposit':
@@ -180,7 +263,7 @@ const createWindow = () => {
       portfolio.push({
         image: "images/aus-flag.png",
         coin: "AU Dollars",
-        amount: txPortfolio['aud'].amount,
+        amount: toDecimals(txPortfolio['aud'].amount, 2).toString(),
         value: formatter.format(txPortfolio['aud'].amount),
         invested: 'n/a',
         $profit: 'n/a',

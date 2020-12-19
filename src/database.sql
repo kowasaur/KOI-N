@@ -8,6 +8,7 @@ CREATE TABLE transactions  (
 	date DATETIME,
 	counterCurrencyId TEXT,
 	counterCurrencyAmount NUMBER,
+	fiatValue NUMBER,
 	feeAmount NUMBER,
 	feeCurrencyId TEXT,
 	-- get it
@@ -16,8 +17,15 @@ CREATE TABLE transactions  (
 	wallet TEXT,
 	note TEXT,
 	dateOpened DATETIME,
-	fiatValue NUMBER,
 	fiatValue2 NUMBER,
 	LPtokenId TEXT,
 	LPtokenAmount NUMBER
 );
+
+CREATE TABLE keys (
+	exchange TEXT,
+	key TEXT,
+	secret TEXT,
+	oldTxs TEXT DEFAULT '[]',
+	PRIMARY KEY(exchange)
+)
