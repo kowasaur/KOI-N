@@ -42,7 +42,6 @@
 - Backup button that download or opens the folder to database.sqlite
 - Maybe make a dashboard thing that shows the performance of all your cryptos using https://www.coingecko.com/en/widgets/coin_price_chart_widget
 - https://www.coingecko.com/en/widgets/
-- Add settings / about page that has source for logo <a href="https://www.vecteezy.com/free-vector/abstract">Abstract Vectors by Vecteezy</a>
 
 ### Miscellaneous
 - Make `database.sqlite` in AppData or something and create the file if it doesn't exist
@@ -57,7 +56,6 @@
 ### Readme / About
 - Add support thing (addresses to donate to) in readme and about (like this https://github.com/SpiralDevelopment/CryptoTracker#support)
 - Put somewhere where I got my tax info from
-- Have Powered by CoinGecko (https://www.coingecko.com/en/branding) in Electron > About KOI-N as well as readme
 - Put thing in readme (maybe elsewhere) on what this has been tested on
 - Make doc with database column name equivalent of what the user sees
 - If I'm gonna have multiple .md files, move this and the others to docs/
@@ -74,7 +72,8 @@ This amount is calculated on every sell with `o - so/b` where `o` is the old inv
 **Note:** aud, ainslie-gold, and ainslie-silver are not on CoinGecko
 
 ## Sources
-The `N` in the KOI-N logo is modified version of [Fish KOI logo and symbol animal vector](https://www.vecteezy.com/vector-art/595538-fish-koi-logo-and-symbol-animal-vector) which is apart of [Abstract Vectors by Vecteezy](https://www.vecteezy.com/free-vector/abstract). The font used is [Otsutome](https://www.freejapanesefont.com/otsutome-font-download/)
+The `N` in the KOI-N logo is modified version of [Fish KOI logo and symbol animal vector](https://www.vecteezy.com/vector-art/595538-fish-koi-logo-and-symbol-animal-vector) which is apart of [Abstract Vectors by Vecteezy](https://www.vecteezy.com/free-vector/abstract). The font used is [Otsutome](https://www.freejapanesefont.com/otsutome-font-download/)  
+All price data and other coin information is provided by [CoinGecko API](https://www.coingecko.com/en/api).  
 Starting from when this was committed (7/12/2020), I put anything that helped me here ~~that I remember~~. (I might move this to it's own doc later on)
 - https://stackoverflow.com/questions/32621988/electron-jquery-is-not-defined/37480521#37480521
 - https://developer.mozilla.org/en-US/docs/Archive/Mozilla/XUL/Attribute/readonly
@@ -93,3 +92,4 @@ Starting from when this was committed (7/12/2020), I put anything that helped me
 - https://stackoverflow.com/questions/18018928/issue-storing-arrays-in-sqlite-using-javascript
 - https://stackoverflow.com/questions/10865025/merge-flatten-an-array-of-arrays
 - https://stackoverflow.com/questions/1374126/how-to-extend-an-existing-javascript-array-with-another-array-without-creating
+- https://stackoverflow.com/a/62171641/14746108

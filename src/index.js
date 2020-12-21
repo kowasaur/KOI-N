@@ -70,6 +70,7 @@ async function asyncify(func, callback) {
   })
 }
 
+// Auto Add Exchange Transactions
 knex('keys').pluck('exchange').then(result => {
   if (result.includes('coinspot')) {
     
@@ -87,7 +88,8 @@ knex('keys').pluck('exchange').then(result => {
           amount: tx.amount,
           date: tx.timestamp,
           otherParty: 'coinspot',
-          fiatValue: tx.audamount
+          fiatValue: tx.audamount,
+          note: 'referral payment'
         })
       });
       txs = txs.concat(await asyncify(coinspotClient.depositHistory, data => {
