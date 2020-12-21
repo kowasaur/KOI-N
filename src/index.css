@@ -16,6 +16,10 @@ header {
   box-shadow: 0px 1px 9px 2px #15167c;
 }
 
+header a {
+  color: white;
+}
+
 a {
   text-decoration: none;
 }
@@ -39,4 +43,57 @@ label {
 
 .required {
   border: 1px solid red;
+}
+
+main a {
+  color: #00b3bd;
+}
+
+#exchanges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.exchange {
+  /*background-color: rgb(9,28,40);*/
+  background-color: #008b92;
+  padding: 1em;
+  display: inline-flex;
+  word-break: break-word;
+  color: white;
+  box-shadow: 0px 0px 7px 2px #15167c;
+  align-items: center;
+  position: relative;
+  flex: 43%;
+}
+
+.exchange > img {
+  margin-right: 1em;
+}
+
+.exchange h3 {
+  margin-top: 0;
+  margin-bottom: 0.7em;
+}
+
+.exchange h5 {
+  font-weight: normal;
+  font-size: 0.9em;
+  color: rgb(202, 202, 202);
+  margin-top: 0;
+  margin-bottom: 0.1em;
+}
+
+.exchange > button {
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 2em;
+  position: absolute;
+  right: 2px;
+  top: 1px;
+  color: #002635;
+  /* color: #15167c; */
+  cursor: pointer;
 }
