@@ -28,4 +28,15 @@ CREATE TABLE keys (
 	secret TEXT,
 	oldTxs TEXT DEFAULT '[]',
 	PRIMARY KEY(exchange)
-)
+);
+
+CREATE TABLE exchangeInfo (
+	exchange TEXT,
+	name TEXT,
+	imageUrl TEXT,
+	PRIMARY KEY(exchange)
+);
+
+INSERT INTO exchangeInfo VALUES
+('coinspot', 'CoinSpot', 'images/coinspot.png'),
+('binance', 'Binance', 'images/binance.svf');

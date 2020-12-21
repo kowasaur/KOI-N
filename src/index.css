@@ -28,6 +28,11 @@ ul {
   list-style: none;
 }
 
+button {
+  outline: none;
+  border: none;
+}
+
 main {
   padding: 0.8em;
 }
@@ -65,7 +70,7 @@ main a {
   box-shadow: 0px 0px 7px 2px #15167c;
   align-items: center;
   position: relative;
-  flex: 43%;
+  flex: 45.5%;
 }
 
 .exchange > img {
@@ -85,15 +90,36 @@ main a {
   margin-bottom: 0.1em;
 }
 
-.exchange > button {
-  border: none;
+.x{
   background: none;
-  outline: none;
   font-size: 2em;
   position: absolute;
   right: 2px;
   top: 1px;
   color: #002635;
-  /* color: #15167c; */
   cursor: pointer;
 }
+
+button.exchange {
+  display: block;
+  text-align: center;
+  font-size: 1em;
+  background-color: #00a329;
+  box-shadow: 0px 0px 7px 2px #004d13;
+  cursor: pointer;
+}
+
+button.exchange:active {
+  background-color: #008521;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* #add-exchange {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+} */

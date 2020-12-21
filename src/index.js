@@ -319,6 +319,11 @@ const createWindow = () => {
       mainWindow.webContents.send("transactionsQueried", result);
     })
   })
+
+  // When Add Exchange is clicked
+  ipcMain.on("addExchange", (evt, exchange) => {
+    console.log(exchange);
+  })
 };
 
 // This method will be called when Electron has finished
