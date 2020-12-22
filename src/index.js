@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const toDecimals  = require('round-to-decimal');
 
@@ -286,6 +286,9 @@ const createWindow = () => {
         }
         mainWindow.webContents.send("totalGenerated", total);
       })
+    }).catch(async () => {
+      await mainWindow.loadFile(path.join(__dirname, 'addTransaction.html'));
+      dialog.showErrorBox("No Transactions", "Please add at least one transaction or connect an exchange")
     })
 
   });
@@ -320,9 +323,26 @@ const createWindow = () => {
     })
   })
 
+  // When Settings is loaded
+  ipcMain.on("settingsLoaded", () => {
+    knex('keys').join('exchangeInfo', 'keys.exchange', 'exchangeInfo.exchange')
+    .select('keys.exchange', 'key', 'name', 'imageUrl')
+    .then(result => mainWindow.webContents.send("connections", result))
+  })
+
   // When Add Exchange is clicked
   ipcMain.on("addExchange", (evt, exchange) => {
-    console.log(exchange);
+    knex('keys').insert(exchange).then( () => {
+      mainWindow.webContents.send("Alert", "Exchange Connection Added Successfully");
+    }).catch(() => {
+      dialog.showErrorBox('Error: Duplicate Exchange', 'As of now, only one of each exchange is allowed');
+    });
+  })
+
+  // When Exchange is removed
+  ipcMain.on("removeExchange", (evt, exchange) => {
+    knex('keys').where('exchange', exchange).del()
+    .then(() => mainWindow.webContents.send("Alert", "Exchange Connection Removed Successfully"))
   })
 };
 

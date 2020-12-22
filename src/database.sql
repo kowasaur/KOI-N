@@ -39,4 +39,4 @@ CREATE TABLE exchangeInfo (
 
 INSERT INTO exchangeInfo VALUES
 ('coinspot', 'CoinSpot', 'images/coinspot.png'),
-('binance', 'Binance', 'images/binance.svf');
+('binance', 'Binance', 'images/binance.svg');

@@ -14,24 +14,6 @@
     <main>
       <h2>Exchange Connections</h2>
       <section id="exchanges">
-        <div class="exchange">
-          <img src="images/coinspot.png" height="75" width="75">
-          <div>
-            <h3>CoinSpot</h3>
-            <h5>API Key</h5>
-            <div>V5tuZnyW5bSmz5LkvqkWsvRQ6lVFi075</div>
-          </div>
-          <button class="x" onclick="confirm('Are you sure you want to remove this exchange?')">&times</button>
-        </div>
-        <div class="exchange">
-          <img src="images/binance.svg" height="75" width="75">
-          <div>
-            <h3>Binance</h3>
-            <h5>API Key</h5>
-            <div>V5tuZnyW5bSmz5LkvqkWsvRQ6lVFi075</div>
-          </div>
-          <button class="x" onclick="confirm('Are you sure you want to remove this exchange?')">&times</button>
-        </div>
         <button class="exchange" onclick="addExchange()">Add Exchange</button>
       </section>
       
@@ -50,7 +32,7 @@
         <input type="text" name="key" id="key" required>
 
         <label for="secret">API Secret</label>
-        <input type="text" name="secret" id="secret" required>
+        <input type="password" name="secret" id="secret" required>
 
         <button id="confirmBtn" value="yes">Add Connection</button>
       </form></dialog>
