@@ -42,6 +42,7 @@
 - Backup button that download or opens the folder to database.sqlite
 - Maybe make a dashboard thing that shows the performance of all your cryptos using https://www.coingecko.com/en/widgets/coin_price_chart_widget
 - https://www.coingecko.com/en/widgets/
+- Add Binance Support, although this will be [difficult](https://dev.binance.vision/t/fetch-all-account-orders/279/8)
 
 ### Miscellaneous
 - Make `database.sqlite` in AppData or something and create the file if it doesn't exist
@@ -52,6 +53,7 @@
 - Change the default menu bar
 - Maybe have query results stored in a variable somewhere so it doesn't have to reload everything every time you click home.
 - Create custom scroll bar https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp
+- You can disable refresh on submit for forms do it
 
 ### Readme / About
 - Add support thing (addresses to donate to) in readme and about (like this https://github.com/SpiralDevelopment/CryptoTracker#support)

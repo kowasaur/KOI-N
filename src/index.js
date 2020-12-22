@@ -70,14 +70,15 @@ async function asyncify(func, callback) {
   })
 }
 
+const coinspotIds = require('./modules/coinspotCoingeckoIds.json')
+const Coinspot = require('coinspot-api');
+
 // Auto Add Exchange Transactions
 function loadExchangeData() {
   knex('keys').pluck('exchange').then(result => {
     if (result.includes('coinspot')) {
       
       knex('keys').first('key', 'secret', 'oldTxs').where('exchange', 'coinspot').then(async result => {
-        const coinspotIds = require('./modules/coinspotCoingeckoIds.json')
-        const Coinspot = require('coinspot-api');
         const coinspotKey = result.key;
         const coinspotSecret = result.secret;
         const coinspotClient = new Coinspot(coinspotKey, coinspotSecret)
