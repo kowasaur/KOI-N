@@ -71,78 +71,80 @@ async function asyncify(func, callback) {
 }
 
 // Auto Add Exchange Transactions
-knex('keys').pluck('exchange').then(result => {
-  if (result.includes('coinspot')) {
-    
-    knex('keys').first('key', 'secret', 'oldTxs').where('exchange', 'coinspot').then(async result => {
-      const coinspotIds = require('./modules/coinspotCoingeckoIds.json')
-      const Coinspot = require('coinspot-api');
-      const coinspotKey = result.key;
-      const coinspotSecret = result.secret;
-      const coinspotClient = new Coinspot(coinspotKey, coinspotSecret)
-
-      let txs = await asyncify(coinspotClient.referral, data => {
-        return data.payments.map(tx => tx = {
-          type: 'receive',
-          id: coinspotIds[tx.coin],
-          amount: tx.amount,
-          date: tx.timestamp,
-          otherParty: 'coinspot',
-          fiatValue: tx.audamount,
-          note: 'referral payment'
-        })
-      });
-      txs = txs.concat(await asyncify(coinspotClient.depositHistory, data => {
-        return data.deposits.map(tx => tx = {
-          type: 'deposit',
-          date: tx.created,
-          otherParty: 'coinspot',
-          id: 'aud',
-          amount: tx.amount
-        })
-      }));
-      txs = txs.concat(await asyncify(coinspotClient.withdrawalHistory, data => {
-        return data.withdrawals.map(tx => tx = {
-          type: 'withdraw',
-          date: tx.created,
-          otherParty: 'coinspot',
-          id: 'aud',
-          amount: tx.amount
-        })
-      }));
-      txs = txs.concat(await asyncify(coinspotClient.transactions, data => {
-        let txs = data.buyorders.map(tx => tx = {
-          type: 'buy',
-          id: coinspotIds[tx.market.split('/')[0]],
-          amount: tx.amount,
-          counterCurrencyId: 'aud',
-          counterCurrencyAmount: tx.audtotal,
-          otherParty: 'coinspot',
-          date: tx.created, // since you can order, this means the date is wrong for some
-          fiatValue: tx.audtotal
-        })
-        return txs.concat(data.sellorders.map(tx => tx = {
-          type: 'sell',
-          id: coinspotIds[tx.market.split('/')[0]],
-          amount: tx.amount,
-          counterCurrencyId: coinspotIds[tx.market.split('/')[1]],
-          counterCurrencyAmount: tx.total,
-          otherParty: 'coinspot',
-          date: tx.created, // same as buy
-          fiatValue: tx.audtotal
+function loadExchangeData() {
+  knex('keys').pluck('exchange').then(result => {
+    if (result.includes('coinspot')) {
+      
+      knex('keys').first('key', 'secret', 'oldTxs').where('exchange', 'coinspot').then(async result => {
+        const coinspotIds = require('./modules/coinspotCoingeckoIds.json')
+        const Coinspot = require('coinspot-api');
+        const coinspotKey = result.key;
+        const coinspotSecret = result.secret;
+        const coinspotClient = new Coinspot(coinspotKey, coinspotSecret)
+  
+        let txs = await asyncify(coinspotClient.referral, data => {
+          return data.payments.map(tx => tx = {
+            type: 'receive',
+            id: coinspotIds[tx.coin],
+            amount: tx.amount,
+            date: tx.timestamp,
+            otherParty: 'coinspot',
+            fiatValue: tx.audamount,
+            note: 'referral payment'
+          })
+        });
+        txs = txs.concat(await asyncify(coinspotClient.depositHistory, data => {
+          return data.deposits.map(tx => tx = {
+            type: 'deposit',
+            date: tx.created,
+            otherParty: 'coinspot',
+            id: 'aud',
+            amount: tx.amount
+          })
         }));
-      }));
-      const coinspotTransactions = txs.flat(); 
-      const oldTxs = JSON.parse(result.oldTxs)
-      const newTxs = subtractObjectArrays(coinspotTransactions, oldTxs)
-      if (newTxs.length > 0) {
-        knex('transactions').insert(newTxs).then(() => 
-          knex('keys').update('oldTxs', JSON.stringify(coinspotTransactions))).then()
-      }
-    })
-  }
-})
-
+        txs = txs.concat(await asyncify(coinspotClient.withdrawalHistory, data => {
+          return data.withdrawals.map(tx => tx = {
+            type: 'withdraw',
+            date: tx.created,
+            otherParty: 'coinspot',
+            id: 'aud',
+            amount: tx.amount
+          })
+        }));
+        txs = txs.concat(await asyncify(coinspotClient.transactions, data => {
+          let txs = data.buyorders.map(tx => tx = {
+            type: 'buy',
+            id: coinspotIds[tx.market.split('/')[0]],
+            amount: tx.amount,
+            counterCurrencyId: 'aud',
+            counterCurrencyAmount: tx.audtotal,
+            otherParty: 'coinspot',
+            date: tx.created, // since you can order, this means the date is wrong for some
+            fiatValue: tx.audtotal
+          })
+          return txs.concat(data.sellorders.map(tx => tx = {
+            type: 'sell',
+            id: coinspotIds[tx.market.split('/')[0]],
+            amount: tx.amount,
+            counterCurrencyId: coinspotIds[tx.market.split('/')[1]],
+            counterCurrencyAmount: tx.total,
+            otherParty: 'coinspot',
+            date: tx.created, // same as buy
+            fiatValue: tx.audtotal
+          }));
+        }));
+        const coinspotTransactions = txs.flat(); 
+        const oldTxs = JSON.parse(result.oldTxs)
+        const newTxs = subtractObjectArrays(coinspotTransactions, oldTxs)
+        if (newTxs.length > 0) {
+          knex('transactions').insert(newTxs).then(() => 
+            knex('keys').update('oldTxs', JSON.stringify(coinspotTransactions))).then()
+        }
+      })
+    }
+  })
+}
+loadExchangeData()
 
 const createWindow = () => {
   // Create the browser window.
@@ -288,7 +290,7 @@ const createWindow = () => {
       })
     }).catch(async () => {
       await mainWindow.loadFile(path.join(__dirname, 'addTransaction.html'));
-      dialog.showErrorBox("No Transactions", "Please add at least one transaction or connect an exchange")
+      dialog.showErrorBox('Error: No Transactions', 'Add a transaction or connect an exchange.');
     })
 
   });
@@ -333,6 +335,7 @@ const createWindow = () => {
   // When Add Exchange is clicked
   ipcMain.on("addExchange", (evt, exchange) => {
     knex('keys').insert(exchange).then( () => {
+      loadExchangeData()
       mainWindow.webContents.send("Alert", "Exchange Connection Added Successfully");
     }).catch(() => {
       dialog.showErrorBox('Error: Duplicate Exchange', 'As of now, only one of each exchange is allowed');
