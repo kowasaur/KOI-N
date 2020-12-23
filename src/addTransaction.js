@@ -14,6 +14,11 @@ const datalist = document.getElementById("id-list")
 
 required = ["type", "id", "amount", "date", "counterCurrencyId", "counterCurrencyAmount"]
 hide = []
+names = {
+    id: "Currency",
+    otherParty: "Other Party",
+    wallet: "Wallet"
+}
 
 // Whenever the type changes
 function typeChange() {
@@ -51,6 +56,35 @@ function typeChange() {
         default:
             console.error("Uh Oh Brokey");
     }
+
+    switch (type.value) {
+        case 'move':
+            names = {
+                id: "Currency",
+                otherParty: "To",
+                wallet: "From"
+            }
+            break;
+        case 'close-position':
+            names = {
+                id: "Profit Currency",
+                otherParty: "Other Party",
+                wallet: "Wallet"
+            }
+            break;
+        default:
+            names = {
+                id: "Currency",
+                otherParty: "Other Party",
+                wallet: "Wallet"
+            }
+            break;
+    }
+
+    Object.keys(names).forEach(id => {
+        document.querySelector(`[for="${id}"]`).innerText = names[id]
+    })
+
     // Removes hide from everything that currently has it
     oldHidden = Array.from(document.getElementsByClassName("hide"))
     for (let i = 0; i < oldHidden.length; i++) {
