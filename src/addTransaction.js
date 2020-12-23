@@ -38,6 +38,9 @@ function typeChange() {
             id.value = "aud"
             id.disabled = true
             break;
+        case "close-position":
+            required = ["type", "id", "amount", "date"]
+            break;
         default:
             console.error("Uh Oh Brokey");
     }

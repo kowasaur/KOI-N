@@ -16,7 +16,6 @@ CREATE TABLE transactions  (
 	link TEXT,
 	wallet TEXT,
 	note TEXT,
-	dateOpened DATETIME,
 	fiatValue2 NUMBER,
 	LPtokenId TEXT,
 	LPtokenAmount NUMBER

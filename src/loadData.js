@@ -27,7 +27,13 @@ ipc.on("portfolioGenerated", (evt, portfolio) => {
                         break;
                     case '$profit':
                     case 'percent_profit':
-                        className = (Number(currency[key].replace(/[^\d.-]/g, '')) > 0) ? 'positive' : 'negative'
+                        const numberProfit = Number(currency[key].replace(/[^\d.-]/g, ''))
+                        if (numberProfit < 0) {
+                            className = 'negative'
+                        } else if (numberProfit > 0) {
+                            className = 'positive'
+                        }
+                        
                     default:
                         content = currency[key];
                         break;

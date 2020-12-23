@@ -44,6 +44,9 @@ const isToday = (date) => {
 
 // Gets historical or current price
 async function getFiatValue(date, id, amount) {
+  if (id === 'aud') {
+    return amount
+  }
   const data = (!isToday(date)) ? await CoinGeckoClient.coins.fetchHistory(id, {
     date: formatDate(date),
     localization: false
@@ -210,6 +213,7 @@ const createWindow = () => {
               break;
             case 'deposit':
             case 'receive':
+            case 'close-position':
               var newAmount = coin.amount + tx.amount;
               break;
             case 'withdraw':
@@ -315,9 +319,10 @@ const createWindow = () => {
   // When a user clicks Add Transaction, this is called
   ipcMain.on("TransactionAdded", async (evt, transaction) => {
     console.log(transaction);
-    if (transaction.fiatValue === 0 && ['buy', 'sell', 'receive'].includes(transaction.type)) {
+    if (transaction.fiatValue === 0 && ['buy', 'sell', 'receive', 'close-position'].includes(transaction.type)) {
       switch (transaction.type) {
         case 'receive':
+        case 'close-position':
           var id = transaction.id
           var amount = transaction.amount
           break;

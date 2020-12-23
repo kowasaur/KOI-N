@@ -6,9 +6,6 @@
     - Show average buy in and average sell out
 - https://htmldom.dev/sort-a-table-by-clicking-its-headers/
     - Make it sort by value by default
-- Make text green if profit and red if loss
-- Maybe make both profits in the same box
-    - Or maybe don't but make sure it's right aligned
 - Maybe make a refresh button (prices)
     - I think this may be unnecessary, depends how slow loading it every time is
 - Make option to not include receives in value and profit
