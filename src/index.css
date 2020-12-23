@@ -34,7 +34,50 @@ button {
 }
 
 main {
-  padding: 0.8em;
+  padding: 1em;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+tr {
+  border-bottom: 1px solid #29353a;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #002a3b;
+}
+
+th {
+  white-space: nowrap;
+}
+
+td, th {
+  padding: 0.5em 0.4em;
+  text-align: right;
+}
+
+td:first-child, th:first-child {
+  text-align: left;
+}
+
+td > div {
+  display: inline-flex;
+  place-items: center;
+}
+
+td img {
+  padding-right: 1em;
+}
+
+.positive {
+  color: rgb(75, 216, 75);
+}
+
+.negative {
+  color: rgb(255, 71, 71);
 }
 
 #success {

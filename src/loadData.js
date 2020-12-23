@@ -20,12 +20,19 @@ ipc.on("portfolioGenerated", (evt, portfolio) => {
         const keys = Object.keys(currency);
         keys.forEach((key) => {
             if (key !== 'coin') {
-                if (key === 'image') {
-                    content = `<img height=30 src="${currency[key]}"">${currency.coin}`
-                } else {
-                    content = currency[key];
+                let className = undefined
+                switch (key) {
+                    case 'image':
+                        content = `<div><img width=30 src="${currency[key]}""><div>${currency.coin}</div></div>`
+                        break;
+                    case '$profit':
+                    case 'percent_profit':
+                        className = (Number(currency[key].replace(/[^\d.-]/g, '')) > 0) ? 'positive' : 'negative'
+                    default:
+                        content = currency[key];
+                        break;
                 }
-                appendElement("td", row, content)
+                appendElement("td", row, content, className)
             }
         })
     }

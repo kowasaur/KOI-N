@@ -167,7 +167,7 @@ loadExchangeData()
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 600,
+    width: 700,
     height: 700,
     
     webPreferences: {
