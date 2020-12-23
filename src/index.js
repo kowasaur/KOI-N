@@ -70,6 +70,23 @@ async function asyncify(func, callback) {
   })
 }
 
+// Reset list of coins
+knex('coins').del().then(async () => {
+  let coinsList = await CoinGeckoClient.coins.list();
+  coinsList = coinsList.data
+  coinsList.push({
+    id: "aud",
+    symbol: "aud",
+    name: "Australian Dollars"
+  })
+  coinsList.push({
+    id: "usd",
+    symbol: "usd",
+    name: "United States Dollars"
+  })
+  knex.batchInsert('coins', coinsList, 300).then();
+})
+
 const coinspotIds = require('./modules/coinspotCoingeckoIds.json')
 const Coinspot = require('coinspot-api');
 
@@ -332,6 +349,9 @@ const createWindow = () => {
     .select('keys.exchange', 'key', 'name', 'imageUrl')
     .then(result => mainWindow.webContents.send("connections", result))
   })
+
+  ipcMain.on("addTransactionLoaded", () => knex('coins').select()
+    .then(result => mainWindow.webContents.send("allCoins", result)))
 
   // When Add Exchange is clicked
   ipcMain.on("addExchange", (evt, exchange) => {

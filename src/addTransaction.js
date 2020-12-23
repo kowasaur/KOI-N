@@ -1,12 +1,16 @@
 const electron = require("electron");
 const ipc = electron.ipcRenderer;
+const appendElement = require("./modules/loadTable.js");
+
+document.addEventListener("DOMContentLoaded",  () => ipc.send("addTransactionLoaded"));
 
 function value(id) {
     return document.getElementById(id).value
 }
 
-var id = document.getElementById("id")
-var type = document.getElementById("type")
+const id = document.getElementById("id")
+const type = document.getElementById("type")
+const datalist = document.getElementById("id-list")
 
 required = ["type", "id", "amount", "date", "counterCurrencyId", "counterCurrencyAmount"]
 
@@ -23,14 +27,14 @@ function typeChange() {
             required = ["type", "id", "amount", "date"]
             break;
         case "move":
-            required = ["type", "id", "amount"]
+            required = ["type", "id", "amount", "date"]
             break;
         case "fee":
             required = ["type", "feeCurrencyId", "feeAmount", "date"]
             break;
         case "deposit":
         case "withdraw":
-            required = ["type", "id", "amount"]
+            required = ["type", "id", "amount", "date"]
             id.value = "aud"
             id.disabled = true
             break;
@@ -82,4 +86,11 @@ ipc.on("TransactionAddedSuccess", () => {
     document.getElementById("success").style.display = "block";
     document.getElementById("amount").value = "";
     document.querySelector('button').disabled = true
+})
+
+ipc.on("allCoins", (evt, allCoins)  => {
+    allCoins.forEach(coin => {
+        const option = appendElement("option", datalist, `${coin.name} (${coin.symbol.toUpperCase()})`)
+        option.value = coin.id
+    });
 })

@@ -29,13 +29,14 @@
       </select>
 
       <label for="id">Currency</label>
-      <input type="text" name="id" id="id" placeholder="bitcoin" class="required">
+      <input type="text" name="id" id="id" class="required" list="id-list">
+      <datalist id="id-list"></datalist>
 
       <label for="amount">Amount</label>
       <input type="number" name="amount" id="amount" placeholder="0.052" class="required">
 
       <label for="counterCurrencyId">Counter Currency</label>
-      <input type="text" name="counterCurrencyId" id="counterCurrencyId" placeholder="binance-usd" class="required">
+      <input type="text" name="counterCurrencyId" id="counterCurrencyId" class="required" list="id-list">
 
       <label for="counterCurrencyAmount">Counter Currency Amount</label>
       <input type="number" name="counterCurrencyAmount" id="counterCurrencyAmount" placeholder="0" class="required">
@@ -47,7 +48,7 @@
       <input type="text" name="wallet" id="wallet" placeholder="0x236914f3e193dDEdFB4f02508d57a686Cf08bB06">
 
       <label for="feeCurrencyId">Fee Currency</label>
-      <input type="text" name="feeCurrencyId" id="feeCurrencyId" placeholder="ethereum">
+      <input type="text" name="feeCurrencyId" id="feeCurrencyId" list="id-list">
 
       <label for="feeAmount">Fee Amount</label>
       <input type="number" name="feeAmount" id="feeAmount" placeholder="0">

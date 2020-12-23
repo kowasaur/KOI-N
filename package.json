@@ -12,7 +12,7 @@
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
-  "keywords": [],
+  "keywords": ["cryptocurrency", "tracker", "portfolio", "electron", "coingecko"],
   "author": {
     "name": "kowasaur",
     "email": "kowasaur@gmail.com"

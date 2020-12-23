@@ -13,9 +13,10 @@
     - I think this may be unnecessary, depends how slow loading it every time is
 - Make option to not include receives in value and profit
 - Change how calculating "invested" works (from like an average to allowing the user to choose what specific transactions they are selling)
+- Right now, if you have more than 100 coins, they won't show up on the dashboard because of the pagination (only shows 1 page rn)
 
 ### Add Transaction
-- Make the currency box in addTransaction.html searchable and only allow specific coins (using select2 or selectize)
+- Improve currency boxes using selectize.js so it's sorted by market cap and has coin logo
     - sort by market cap and last input
 - Make button to hide `Transaction Added Successfully` (little x)
 - Have question marks you can hover over that explain stuff
@@ -24,7 +25,6 @@
 - Maybe make drop down with things user has put before 
     - e.g. in exchange it has binance as an option if they've put it there before
 - Add support for payments (sending)
-- Might have to make `addTransaction.js` make empty values NULL instead of ''
 - Make clear button that removes all input values
 - Maybe make `check()` wait for `typeChange()` to run so that it's accurate
 
