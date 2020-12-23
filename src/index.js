@@ -197,20 +197,14 @@ const createWindow = () => {
         // for fees
         if (tx.id !== '') {
           let coin = txPortfolio[tx.id] || { amount: 0, invested: 0 }
+          let counterCoin = txPortfolio[tx.counterCurrencyId] || { amount: 0, invested: 0 }
           // Amount
           switch (tx.type) {
             case 'sell':
               tx.amount *= -1
               tx.counterCurrencyAmount *= -1
             case 'buy':
-              var newAmount = coin.amount + tx.amount;
-
-              let counterCoin = txPortfolio[tx.counterCurrencyId] || { amount: 0, invested: 0 }
-              txPortfolio[tx.counterCurrencyId] = {
-                amount: counterCoin.amount - tx.counterCurrencyAmount,
-                invested: counterCoin.invested - tx.amount *counterCoin.invested / counterCoin.amount // change this back if something's not working
-              }
-              break;
+              var newCounterAmount = counterCoin.amount - tx.counterCurrencyAmount;
             case 'deposit':
             case 'receive':
             case 'close-position':
@@ -224,12 +218,14 @@ const createWindow = () => {
           }
           // Invested
           switch (tx.type) {
-            case 'deposit':
             case 'buy':
+              var newCounterInvested = counterCoin.invested - tx.counterCurrencyAmount * counterCoin.invested / counterCoin.amount 
+            case 'deposit':
               var newInvested = coin.invested + tx.fiatValue
               break;
             case 'sell':
               var newInvested = coin.invested - -tx.amount * coin.invested / coin.amount
+              var newCounterInvested = counterCoin.invested + tx.fiatValue
               break;
             default:
               var newInvested = coin.invested;
@@ -237,6 +233,10 @@ const createWindow = () => {
           txPortfolio[tx.id] = {
             amount: newAmount,
             invested: newInvested
+          }
+          txPortfolio[tx.counterCurrencyId] = {
+            amount: newCounterAmount,
+            invested: newCounterInvested
           }
         }
 

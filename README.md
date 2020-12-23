@@ -18,7 +18,6 @@
 - Make button to hide `Transaction Added Successfully` (little x)
 - Have question marks you can hover over that explain stuff
     - This could be for other parts of the app too
-- Make placeholder text lighter so that it is more distinguisable
 - Maybe make drop down with things user has put before 
     - e.g. in exchange it has binance as an option if they've put it there before
 - Add support for payments (sending)

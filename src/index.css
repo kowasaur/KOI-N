@@ -93,6 +93,10 @@ label {
   border: 1px solid red;
 }
 
+.hide {
+  display: none;
+}
+
 main a {
   color: #00b3bd;
 }

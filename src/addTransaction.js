@@ -13,6 +13,7 @@ const type = document.getElementById("type")
 const datalist = document.getElementById("id-list")
 
 required = ["type", "id", "amount", "date", "counterCurrencyId", "counterCurrencyAmount"]
+hide = []
 
 // Whenever the type changes
 function typeChange() {
@@ -22,28 +23,45 @@ function typeChange() {
         case "buy":
         case "sell":
             required = ["type", "id", "amount", "date", "counterCurrencyId", "counterCurrencyAmount"]
+            hide = []
             break;
         case "receive":
             required = ["type", "id", "amount", "date"]
+            hide = ["counterCurrencyId", "counterCurrencyAmount"]
             break;
         case "move":
             required = ["type", "id", "amount", "date"]
+            hide = ["counterCurrencyId", "counterCurrencyAmount", "fiatValue"]
             break;
         case "fee":
             required = ["type", "feeCurrencyId", "feeAmount", "date"]
+            hide = ["id", "amount", "counterCurrencyId", "counterCurrencyAmount", "fiatValue", "otherParty"]
             break;
         case "deposit":
         case "withdraw":
             required = ["type", "id", "amount", "date"]
+            hide = ["counterCurrencyId", "counterCurrencyAmount", "fiatValue", "wallet", "feeCurrencyId", "feeAmount", "feeatValue"]
             id.value = "aud"
             id.disabled = true
             break;
         case "close-position":
             required = ["type", "id", "amount", "date"]
+            hide = ["counterCurrencyId", "counterCurrencyAmount", "wallet", "feeCurrencyId", "feeAmount", "feeatValue"]
             break;
         default:
             console.error("Uh Oh Brokey");
     }
+    // Removes hide from everything that currently has it
+    oldHidden = Array.from(document.getElementsByClassName("hide"))
+    for (let i = 0; i < oldHidden.length; i++) {
+        oldHidden[i].classList.remove("hide");
+    }
+    // Makes hide hidden
+    for (let i = 0; i < hide.length; i++) {
+        document.getElementById(hide[i]).classList.add("hide")
+        document.querySelector(`[for="${hide[i]}"]`).classList.add("hide")
+    }
+
     // Removes required from everything that currently has it
     oldRequireds = Array.from(document.getElementsByClassName("required"))
     for (let i = 0; i < oldRequireds.length; i++) {
@@ -83,12 +101,17 @@ function addTransaction() {
         fiatValue: Number(value("fiatValue"))
     };
     ipc.send("TransactionAdded", transaction)
+    document.querySelector('button').disabled = true
+}
+
+function resetForm() {
+    document.querySelector("form").reset()
+    typeChange()
 }
 
 ipc.on("TransactionAddedSuccess", () => {
     document.getElementById("success").style.display = "block";
-    document.getElementById("amount").value = "";
-    document.querySelector('button').disabled = true
+    resetForm()
 })
 
 ipc.on("allCoins", (evt, allCoins)  => {

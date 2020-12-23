@@ -32,48 +32,49 @@
       <datalist id="id-list"></datalist>
 
       <label for="amount">Amount</label>
-      <input type="number" name="amount" id="amount" placeholder="0.052" class="required">
+      <input type="number" name="amount" id="amount" class="required">
 
       <label for="counterCurrencyId">Counter Currency</label>
       <input type="text" name="counterCurrencyId" id="counterCurrencyId" class="required" list="id-list">
 
       <label for="counterCurrencyAmount">Counter Currency Amount</label>
-      <input type="number" name="counterCurrencyAmount" id="counterCurrencyAmount" placeholder="0" class="required">
+      <input type="number" name="counterCurrencyAmount" id="counterCurrencyAmount" class="required">
+
+      <label for="fiatValue">Fiat Value</label>
+      <input type="number" name="fiatValue" id="fiatValue">
+
+      <label for="date">Date</label>
+      <input type="datetime-local" name="date" id="date" class="required">
 
       <label for="otherParty">Other Party</label>
-      <input type="text" name="otherParty" id="otherParty" placeholder="binance">
+      <input type="text" name="otherParty" id="otherParty">
 
       <label for="wallet">Wallet</label>
-      <input type="text" name="wallet" id="wallet" placeholder="0x236914f3e193dDEdFB4f02508d57a686Cf08bB06">
+      <input type="text" name="wallet" id="wallet">
 
       <label for="feeCurrencyId">Fee Currency</label>
       <input type="text" name="feeCurrencyId" id="feeCurrencyId" list="id-list">
 
       <label for="feeAmount">Fee Amount</label>
-      <input type="number" name="feeAmount" id="feeAmount" placeholder="0">
-
-      <label for="date">Date</label>
-      <input type="datetime-local" name="date" id="date" class="required">
-
-      <label for="link">Link</label>
-      <input type="text" name="link" id="link">
-
-      <label for="fiatValue">Fiat Value</label>
-      <input type="number" name="fiatValue" id="fiatValue" placeholder="0">
+      <input type="number" name="feeAmount" id="feeAmount">
 
       <label for="feeatValue">Fee Fiat Value</label>
       <input type="number" name="feeatValue" id="feeatValue">
+
+      <label for="link">Link</label>
+      <input type="text" name="link" id="link">
 
       <label for="note">Note</label>
       <input type="text" name="note" id="note">
 
       <button type="button" onclick="addTransaction()" disabled>Add Transaction</button>
+      <button type="button" onclick="resetForm()">Reset</button>
     </form>
 
     <div id="success">Transaction Added Succesfully</div>
 
     <p style="color:red">Boxes with a red border are required</p>
-    <p>If no fiat value is entered, it will be estimated using CoinGecko</p>
+    <p>If no fiat value is entered, it will be estimated using CoinGecko API</p>
     </main>
     <script src="addTransaction.js"></script>
   </body>
