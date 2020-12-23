@@ -134,8 +134,9 @@ function addTransaction() {
         note: value("note"),
         fiatValue: Number(value("fiatValue"))
     };
-    ipc.send("TransactionAdded", transaction)
     document.querySelector('button').disabled = true
+    document.getElementById("success").style.display = "none";
+    ipc.send("TransactionAdded", transaction)
 }
 
 function resetForm() {

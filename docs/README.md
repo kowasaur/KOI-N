@@ -1,4 +1,5 @@
-# THIS IS NOT IN A WORKING STATE YET
+# ![KOI-N](../assets/logoS.png)
+A cryptocurrency portfolio tracker. 
 
 ## To Do
 ### Home
@@ -34,7 +35,6 @@
     - ERC20 tokens. (Have token address)
 - Make a thing that figures out your taxes
 - Make it so you can change currency (not just AUD)
-- Import exchange transactions
 - Backup button that download or opens the folder to database.sqlite
 - Maybe make a dashboard thing that shows the performance of all your cryptos using https://www.coingecko.com/en/widgets/coin_price_chart_widget
 - https://www.coingecko.com/en/widgets/
@@ -49,14 +49,13 @@
 - Change the default menu bar
 - Maybe have query results stored in a variable somewhere so it doesn't have to reload everything every time you click home.
 - Create custom scroll bar https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp
-- You can disable refresh on submit for forms do it
+- You can disable refresh on submit for forms. Do it
 
 ### Readme / About
 - Add support thing (addresses to donate to) in readme and about (like this https://github.com/SpiralDevelopment/CryptoTracker#support)
 - Put somewhere where I got my tax info from
 - Put thing in readme (maybe elsewhere) on what this has been tested on
 - Make doc with database column name equivalent of what the user sees
-- If I'm gonna have multiple .md files, move this and the others to docs/
 - Have somewhere the importance of backing up since this is stored locally
 
 ## How It Works
@@ -66,28 +65,6 @@ Fees are included in the amount invested in a coin
 Say you put $500 into bitcoin. The price then doubles and you sell half of it. Your 'invested' is now $250.  
 This amount is calculated on every sell with `o - so/b` where `o` is the old invested amount (AUD), `s` is the amount in crypto that is being sold, and `b` is the total balance of that crypto, prior to selling. 
 
-## coinspotIds.json
-**Note:** aud, ainslie-gold, and ainslie-silver are not on CoinGecko
-
-## Sources
-The `N` in the KOI-N logo is modified version of [Fish KOI logo and symbol animal vector](https://www.vecteezy.com/vector-art/595538-fish-koi-logo-and-symbol-animal-vector) which is apart of [Abstract Vectors by Vecteezy](https://www.vecteezy.com/free-vector/abstract). The font used is [Otsutome](https://www.freejapanesefont.com/otsutome-font-download/)  
-All price data and other coin information is provided by [CoinGecko API](https://www.coingecko.com/en/api).  
-Starting from when this was committed (7/12/2020), I put anything that helped me here ~~that I remember~~. (I might move this to it's own doc later on)
-- https://stackoverflow.com/questions/32621988/electron-jquery-is-not-defined/37480521#37480521
-- https://developer.mozilla.org/en-US/docs/Archive/Mozilla/XUL/Attribute/readonly
-- https://stackoverflow.com/questions/195951/how-can-i-change-an-elements-class-with-javascript
-- https://stackoverflow.com/questions/22754315/for-loop-for-htmlcollection-elements
-- https://www.freecodecamp.org/news/manipulating-arrays-in-javascript/
-- https://stackoverflow.com/questions/44813732/how-do-i-check-if-all-elements-of-an-array-are-null
-- Flag images
-    - https://commons.wikimedia.org/wiki/File:Australia_flag_icon_round.svg
-    - https://commons.wikimedia.org/wiki/File:United-states_flag_icon_round.svg
-- https://stackoverflow.com/questions/28246788/convert-yyyy-mm-dd-to-mm-dd-yyyy-in-javascript/28246873
-- https://www.w3schools.com/jsref/jsref_includes_array.asp
-- https://flaviocopes.com/how-to-determine-date-is-today-javascript/
-- https://stackoverflow.com/questions/57007749/date-getdate-is-not-a-function-typescript
-- https://stackoverflow.com/questions/21509474/subtract-arrays-javascript
-- https://stackoverflow.com/questions/18018928/issue-storing-arrays-in-sqlite-using-javascript
-- https://stackoverflow.com/questions/10865025/merge-flatten-an-array-of-arrays
-- https://stackoverflow.com/questions/1374126/how-to-extend-an-existing-javascript-array-with-another-array-without-creating
-- https://stackoverflow.com/a/62171641/14746108
+## More Information
+- [Sources](sources.md)
+- [Miscellaneous](miscellaneous.md)
