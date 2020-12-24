@@ -5,6 +5,20 @@ const toDecimals  = require('round-to-decimal');
 const CoinGecko = require('coingecko-api');
 const CoinGeckoClient = new CoinGecko();
 
+const CurrencyConverter = require('@y2nk4/currency-converter')
+// I should probably make the user have to insert their own here
+const fiatConverter = new CurrencyConverter('ede92e754aeaa3272a7d') 
+const OUNCETOGRAMS = 31.1034768
+
+/** Intended for use with CurrencyConverter */
+function ounceConvert(ounceValue, id) {
+  if (['XAU', 'XAG'].includes(id.toUpperCase())) {
+    return ounceValue / OUNCETOGRAMS
+  } else {
+    return ounceValue
+  }
+}
+
 // Enable live reload for front end and back end
 require('electron-reload')(__dirname, { electron: require(path.join(__dirname, '..', 'node_modules', 'electron')) });
 
@@ -47,6 +61,10 @@ async function getFiatValue(date, id, amount) {
   if (id === 'aud') {
     return amount
   }
+  if (['usd', 'xag', 'xau'].includes(id)) {
+    const value = ounceConvert(await fiatConverter.convert(id.toUpperCase(), 'AUD', amount, false, date.substring(0, 10)), id)
+    return value
+  }
   const data = (!isToday(date)) ? await CoinGeckoClient.coins.fetchHistory(id, {
     date: formatDate(date),
     localization: false
@@ -77,16 +95,7 @@ async function asyncify(func, callback) {
 knex('coins').del().then(async () => {
   let coinsList = await CoinGeckoClient.coins.list();
   coinsList = coinsList.data
-  coinsList.push({
-    id: "aud",
-    symbol: "aud",
-    name: "Australian Dollars"
-  })
-  coinsList.push({
-    id: "usd",
-    symbol: "usd",
-    name: "United States Dollars"
-  })
+  coinsList = coinsList.concat(await knex('customCurrencies').select('id','symbol','name'))
   knex.batchInsert('coins', coinsList, 300).then();
 })
 
@@ -220,11 +229,14 @@ const createWindow = () => {
           switch (tx.type) {
             case 'buy':
               var newCounterInvested = counterCoin.invested - tx.counterCurrencyAmount * counterCoin.invested / counterCoin.amount 
-            case 'deposit':
               var newInvested = coin.invested + tx.fiatValue
               break;
+            case 'deposit':
+              var newInvested = coin.invested + tx.amount
+              break;
+            case 'withdraw':
             case 'sell':
-              var newInvested = coin.invested - -tx.amount * coin.invested / coin.amount
+              var newInvested = coin.invested - tx.amount * coin.invested / coin.amount
               var newCounterInvested = counterCoin.invested + tx.fiatValue
               break;
             default:
@@ -285,17 +297,28 @@ const createWindow = () => {
         });
         totalValue += value;
       }
-      // AUD
-      portfolio.push({
-        image: "images/aus-flag.png",
-        coin: "AU Dollars",
-        amount: toDecimals(txPortfolio['aud'].amount, 2).toString(),
-        value: formatter.format(txPortfolio['aud'].amount),
-        invested: 'n/a',
-        $profit: 'n/a',
-        percent_profit: 'n/a'
-      })
-      totalValue += txPortfolio['aud'].amount
+
+      const customCurrencies = await knex('customCurrencies')
+      for (const currency of customCurrencies) {
+        try {
+          const amount = txPortfolio[currency.id].amount
+          const value = (currency.value == 'currency-converter') ? 
+            ounceConvert(await fiatConverter.convert(currency.id.toUpperCase(), 'AUD', amount), currency.id)
+            : currency.value * amount
+          const invested = txPortfolio[currency.id].invested
+          const $profit = value - invested
+          portfolio.push({
+            image: currency.image,
+            coin: currency.name,
+            amount: toDecimals(amount, 6).toString(),
+            value: formatter.format(value),
+            invested: formatter.format(invested),
+            $profit: formatter.format($profit),
+            percent_profit: `${($profit / invested * 100).toFixed(2)}%`
+          });
+          totalValue += value;
+        } catch {}
+      }
       mainWindow.webContents.send("portfolioGenerated", portfolio)
       
       // Whole Portfolio
@@ -318,7 +341,6 @@ const createWindow = () => {
   });
   // When a user clicks Add Transaction, this is called
   ipcMain.on("TransactionAdded", async (evt, transaction) => {
-    console.log(transaction);
     if (transaction.fiatValue === 0 && ['buy', 'sell', 'receive', 'close-position'].includes(transaction.type)) {
       switch (transaction.type) {
         case 'receive':

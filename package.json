@@ -12,7 +12,13 @@
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
-  "keywords": ["cryptocurrency", "tracker", "portfolio", "electron", "coingecko"],
+  "keywords": [
+    "cryptocurrency",
+    "tracker",
+    "portfolio",
+    "electron",
+    "coingecko"
+  ],
   "author": {
     "name": "kowasaur",
     "email": "kowasaur@gmail.com"
@@ -46,6 +52,7 @@
     }
   },
   "dependencies": {
+    "@y2nk4/currency-converter": "^1.1.0",
     "coingecko-api": "^1.0.10",
     "coinspot-api": "github:kowasaur/npm-coinspot-api",
     "electron-squirrel-startup": "^1.0.0",

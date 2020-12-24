@@ -29,6 +29,7 @@ A cryptocurrency portfolio tracker.
 - Ability to export transactions and portfolio as sheets? (csv?)
 - Ability to look at individual accounts like Binance, Coinspot, 0x52385023853, etc
     - Group ethereum wallets optional as well
+- Edit transactions
 
 ### New Features
 - Add custom coins

@@ -45,3 +45,17 @@ CREATE TABLE coins (
 	symbol TEXT,
 	name TEXT
 );
+
+CREATE TABLE customCurrencies (
+	id TEXT,
+	symbol TEXT,
+	name TEXT,
+	image TEXT,
+	value TEXT
+);
+
+INSERT INTO customCurrencies VALUES
+('aud', 'aud', 'AU Dollars', 'images/aus-flag.png', 1),
+('usd', 'usd', 'US Dollars', 'images/us-flag.png', 'currency-converter'),
+('xau', 'aus', 'Gold', 'https://www.coinspot.com.au/public/img/night/coinmd/gold%20standard.png', 'currency-converter'),
+('xag', 'ags', 'Silver', 'https://www.coinspot.com.au/public/img/night/coinmd/silver%20standard.png', 'currency-converter');
