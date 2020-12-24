@@ -40,6 +40,7 @@ A cryptocurrency portfolio tracker.
 - Maybe make a dashboard thing that shows the performance of all your cryptos using https://www.coingecko.com/en/widgets/coin_price_chart_widget
 - https://www.coingecko.com/en/widgets/
 - Add Binance Support, although this will be [difficult](https://dev.binance.vision/t/fetch-all-account-orders/279/8)
+- Make liquidity providing actually work
 
 ### Miscellaneous
 - Make `database.sqlite` in AppData or something and create the file if it doesn't exist

@@ -65,6 +65,9 @@ async function getFiatValue(date, id, amount) {
     const value = ounceConvert(await fiatConverter.convert(id.toUpperCase(), 'AUD', amount, false, date.substring(0, 10)), id)
     return value
   }
+  if (id === 'xdai') {
+    id = 'dai'
+  }
   const data = (!isToday(date)) ? await CoinGeckoClient.coins.fetchHistory(id, {
     date: formatDate(date),
     localization: false
@@ -302,9 +305,20 @@ const createWindow = () => {
       for (const currency of customCurrencies) {
         try {
           const amount = txPortfolio[currency.id].amount
-          const value = (currency.value == 'currency-converter') ? 
-            ounceConvert(await fiatConverter.convert(currency.id.toUpperCase(), 'AUD', amount), currency.id)
-            : currency.value * amount
+          if (currency.value == 'currency-converter') {
+            value = ounceConvert(await fiatConverter.convert(currency.id.toUpperCase(), 'AUD', amount), currency.id)
+          } else if (currency.value * 0 == 0) {
+            value = currency.value * amount
+          } else {
+            const data = await CoinGeckoClient.coins.fetch(currency.value, {
+              tickers: false,
+              community_data: false,
+              developer_data: false,
+              localization: false
+            })
+            value = data.data.market_data.current_price.aud
+          }
+          
           const invested = txPortfolio[currency.id].invested
           const $profit = value - invested
           portfolio.push({
