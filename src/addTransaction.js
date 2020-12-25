@@ -13,12 +13,7 @@ const type = document.getElementById("type")
 const datalist = document.getElementById("id-list")
 
 required = ["type", "id", "amount", "date", "counterCurrencyId", "counterCurrencyAmount"]
-hide = []
-names = {
-    id: "Currency",
-    otherParty: "Other Party",
-    wallet: "Wallet"
-}
+hide = ["lpTokenAmount"]
 
 // Whenever the type changes
 function typeChange() {
@@ -28,39 +23,49 @@ function typeChange() {
         case "buy":
         case "sell":
             required = ["type", "id", "amount", "date", "counterCurrencyId", "counterCurrencyAmount"]
-            hide = []
+            hide = ["lpTokenAmount"]
             break;
         case "receive":
             required = ["type", "id", "amount", "date"]
-            hide = ["counterCurrencyId", "counterCurrencyAmount"]
+            hide = ["lpTokenAmount", "counterCurrencyId", "counterCurrencyAmount"]
             break;
         case "move":
             required = ["type", "id", "amount", "date"]
-            hide = ["counterCurrencyId", "counterCurrencyAmount", "fiatValue"]
+            hide = ["lpTokenAmount", "counterCurrencyId", "counterCurrencyAmount", "fiatValue"]
             break;
         case "fee":
             required = ["type", "feeCurrencyId", "feeAmount", "date"]
-            hide = ["id", "amount", "counterCurrencyId", "counterCurrencyAmount", "fiatValue", "otherParty"]
+            hide = ["lpTokenAmount", "id", "amount", "counterCurrencyId", "counterCurrencyAmount", "fiatValue", "otherParty"]
             break;
         case "deposit":
         case "withdraw":
             required = ["type", "id", "amount", "date"]
-            hide = ["counterCurrencyId", "counterCurrencyAmount", "fiatValue", "wallet", "feeCurrencyId", "feeAmount", "feeatValue"]
+            hide = ["lpTokenAmount", "counterCurrencyId", "counterCurrencyAmount", "fiatValue", "wallet", "feeCurrencyId", "feeAmount", "feeatValue"]
             id.value = "aud"
             id.disabled = true
             break;
         case "close-position":
             required = ["type", "id", "amount", "date"]
-            hide = ["counterCurrencyId", "counterCurrencyAmount", "wallet", "feeCurrencyId", "feeAmount", "feeatValue"]
+            hide = ["lpTokenAmount", "counterCurrencyId", "counterCurrencyAmount", "wallet", "feeCurrencyId", "feeAmount", "feeatValue"]
             break;
-        default:
-            console.error("Uh Oh Brokey");
+        case "provide-liquidity":
+        case "withdraw-liquidity":
+            required = ["lpTokenAmount", "type", "id", "amount", "date", "counterCurrencyId", "counterCurrencyAmount"]
+            hide = []
+            break;
     }
 
+    // Labels
+    // I could probably have a lot less unnecessary lines here
+    // if I used a class for the names instead
     switch (type.value) {
         case 'move':
             names = {
                 id: "Currency",
+                amount: "Amount",
+                counterCurrencyId: "Counter Currency",
+                counterCurrencyAmount: "Counter Currency Amount",
+                fiatValue: "Fiat Value",
                 otherParty: "To",
                 wallet: "From"
             }
@@ -68,6 +73,22 @@ function typeChange() {
         case 'close-position':
             names = {
                 id: "Profit Currency",
+                amount: "Amount",
+                counterCurrencyId: "Counter Currency",
+                counterCurrencyAmount: "Counter Currency Amount",
+                fiatValue: "Fiat Value",
+                otherParty: "Other Party",
+                wallet: "Wallet"
+            }
+            break;
+        case 'provide-liquidity':
+        case 'withdraw-liquidity':
+            names = {
+                id: "Currency 1",
+                amount: "Currency 1 Amount",
+                counterCurrencyId: "Currency 2",
+                counterCurrencyAmount: "Currency 2 Amount",
+                fiatValue: "Currency 2 Fiat Value",
                 otherParty: "Other Party",
                 wallet: "Wallet"
             }
@@ -75,6 +96,10 @@ function typeChange() {
         default:
             names = {
                 id: "Currency",
+                amount: "Amount",
+                counterCurrencyId: "Counter Currency",
+                counterCurrencyAmount: "Counter Currency Amount",
+                fiatValue: "Fiat Value",
                 otherParty: "Other Party",
                 wallet: "Wallet"
             }
@@ -132,7 +157,8 @@ function addTransaction() {
         link: value("link"),
         wallet: value("wallet"),
         note: value("note"),
-        fiatValue: Number(value("fiatValue"))
+        fiatValue: Number(value("fiatValue")),
+        lpTokenAmount: Number(value("lpTokenAmount"))
     };
     document.querySelector('button').disabled = true
     document.getElementById("success").style.display = "none";

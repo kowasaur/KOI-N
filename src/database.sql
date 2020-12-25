@@ -16,9 +16,8 @@ CREATE TABLE transactions  (
 	link TEXT,
 	wallet TEXT,
 	note TEXT,
-	fiatValue2 NUMBER,
-	LPtokenId TEXT,
-	LPtokenAmount NUMBER
+	lpTokenId TEXT,
+	lpTokenAmount NUMBER
 );
 
 CREATE TABLE keys (
