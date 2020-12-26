@@ -24,3 +24,4 @@ Starting from when this was committed (7/12/2020), I put anything that helped me
 - https://stackoverflow.com/questions/1374126/how-to-extend-an-existing-javascript-array-with-another-array-without-creating
 - https://stackoverflow.com/a/62171641/14746108
 - https://www.coreycleary.me/why-does-async-await-in-a-foreach-not-actually-await
+- https://www.youtube.com/watch?v=H5vFcVdm57U

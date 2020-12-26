@@ -52,6 +52,19 @@ tbody tr:nth-child(odd) {
 
 th {
   white-space: nowrap;
+  cursor: pointer;
+}
+
+.th-sort-asc::after {
+  content: "\25b4";
+}
+
+.th-sort-desc::after {
+  content: "\25be";
+}
+
+.th-sort-asc::after, .th-sort-desc::after {
+  margin-left: 5px;
 }
 
 td, th {

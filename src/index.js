@@ -322,7 +322,13 @@ const createWindow = () => {
           value: formatter.format(value),
           invested: formatter.format(invested),
           $profit: formatter.format($profit),
-          percent_profit: `${($profit / invested * 100).toFixed(2)}%`
+          percent_profit: `${(($profit / invested || 0) * 100).toFixed(2)}%`,
+          coin_number: marketData[i].market_cap_rank,
+          amount_number: amount,
+          value_number: value,
+          invested_number: invested,
+          $profit_number: $profit,
+          percent_profit_number: ($profit / invested || 0) * 100
         });
         totalValue += value;
       }
@@ -354,7 +360,13 @@ const createWindow = () => {
             value: formatter.format(value),
             invested: formatter.format(invested),
             $profit: formatter.format($profit),
-            percent_profit: `${($profit / invested * 100).toFixed(2)}%`
+            percent_profit: `${(($profit / invested || 0) * 100).toFixed(2)}%`,
+            coin_number: 69420,
+            amount_number: amount,
+            value_number: value,
+            invested_number: invested,
+            $profit_number: $profit,
+            percent_profit_number: ($profit / invested || 0) * 100
           });
           totalValue += value;
         } catch {}
