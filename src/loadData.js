@@ -1,5 +1,6 @@
 const electron = require("electron");
 const appendElement = require("./modules/loadTable.js");
+require('chart.js')
 const ipc = electron.ipcRenderer;
 
 // Modified from: https://www.youtube.com/watch?v=H5vFcVdm57U
@@ -77,5 +78,56 @@ ipc.on("portfolioGenerated", (evt, portfolio) => {
     
             sortTableByColumn(tableElement, headerIndex, !currentIsAscending)
         })
+    })
+
+    // Pi Chart
+    const allValues = Array.from(tbody.querySelectorAll("tr"))
+        .sort((a, b) => {
+        const aColText = Number(a.querySelector(`td:nth-child(3)`).dataset.number)
+        const bColText = Number(b.querySelector(`td:nth-child(3)`).dataset.number)
+        
+        return aColText > bColText ? -1 : 1;
+        }).map(tr => { return {
+            label: tr.querySelector('td:nth-child(1)').lastElementChild.lastElementChild.textContent,
+            value: Number(tr.querySelector(`td:nth-child(3)`).dataset.number)
+        }});
+    let highestValues = allValues.slice(0, 10)
+    highestValues.push({
+        label: 'Other',
+        value: allValues.slice(10).map(coin => coin.value).reduce((a, b) => a + b)
+    })
+    const totalValue = highestValues.map(coin => coin.value).reduce((a,b) => a + b)
+
+    const pieChart = document.getElementById("pieChart").getContext('2d');
+    new Chart(pieChart, {
+        type: 'pie',
+        data: {
+            labels: highestValues.map(coin => coin.label),
+            datasets: [{
+                data: highestValues.map(coin => coin.value),
+                backgroundColor: ['rgba(214, 0, 0, 0.86)', 'rgba(214, 107, 0)', 'rgb(214, 214, 0)', 'rgb(107, 214, 0)', 'rgb(0, 214, 107)', 'rgba(0, 214, 214, 0.9)', 'rgb(0, 107, 214)', 'rgba(0, 0, 214, 0.8)', 'rgba(107, 0, 214, 0.9)', 'rgba(214, 0, 214, 0.9)', 'rgba(140, 140, 140, 0.5)'],
+                borderWidth: 3,
+                borderColor: '#002635'
+            }]
+        },
+        options: {
+            tooltips: {
+                callbacks: {
+                    label: (tooltipItem, data) => {
+                        let label = data.labels[tooltipItem.index] || '';
+                        if (label) {
+                            label += ': '
+                        }
+                        label += (data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] / totalValue * 100).toFixed(2) + '%'
+                        return label
+                    }
+                }
+            },
+            legend: {
+                display: false
+            },
+            aspectRatio: 1,
+            responsive: false
+        }
     })
 })
