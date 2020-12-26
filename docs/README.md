@@ -69,4 +69,4 @@ This amount is calculated on every sell with `o - so/b` where `o` is the old inv
 
 ## More Information
 - [Sources](sources.md)
-- [Miscellaneous](miscellaneous.md)
+- [Miscellaneous](misc.md)

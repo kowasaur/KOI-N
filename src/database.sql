@@ -50,7 +50,8 @@ CREATE TABLE customCurrencies (
 	symbol TEXT,
 	name TEXT,
 	image TEXT,
-	value TEXT
+	value TEXT,
+	PRIMARY KEY(id)
 );
 
 INSERT INTO customCurrencies VALUES

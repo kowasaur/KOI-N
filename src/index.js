@@ -212,6 +212,8 @@ const createWindow = () => {
           let counterCoin = txPortfolio[tx.counterCurrencyId] || { amount: 0, invested: 0 }
           // Amount
           switch (tx.type) {
+            case 'withdraw-liquidity':
+              tx.amount *= -1
             case 'sell':
               tx.amount *= -1
               tx.counterCurrencyAmount *= -1
@@ -222,6 +224,8 @@ const createWindow = () => {
             case 'close-position':
               var newAmount = coin.amount + tx.amount;
               break;
+            case 'provide-liquidity':
+              var newCounterAmount = counterCoin.amount - tx.counterCurrencyAmount;
             case 'withdraw':
               var newAmount = coin.amount - tx.amount
               break;
@@ -242,6 +246,14 @@ const createWindow = () => {
               var newInvested = coin.invested - tx.amount * coin.invested / coin.amount
               var newCounterInvested = counterCoin.invested + tx.fiatValue
               break;
+            case 'provide-liquidity':
+              var newInvested = coin.invested - tx.amount * coin.invested / coin.amount
+              var newCounterInvested = counterCoin.invested - tx.counterCurrencyAmount * counterCoin.invested / counterCoin.amount 
+              break;
+            case 'withdraw-liquidity':
+              var newInvested = coin.invested + tx.fiatValue
+              var newCounterInvested = counterCoin.invested + tx.fiatValue
+              break;
             default:
               var newInvested = coin.invested;
           }
@@ -252,6 +264,20 @@ const createWindow = () => {
           txPortfolio[tx.counterCurrencyId] = {
             amount: newCounterAmount,
             invested: newCounterInvested
+          }
+          if (tx.type.includes('liquidity')) {
+            let lpCoin = txPortfolio[tx.lpTokenId] || { amount: 0, invested: 0 }
+            if (tx.type === 'provide-liquidity') {
+              var newLpAmount = lpCoin.amount + tx.lpTokenAmount
+              var newLpInvested = lpCoin.invested + (tx.fiatValue * 2)
+            } else {
+              var newLpAmount = lpCoin.amount - tx.lpTokenAmount
+              var newLpInvested = lpCoin.invested - tx.lpTokenAmount * lpCoin.invested / lpCoin.amount
+            }
+            txPortfolio[tx.lpTokenId] = {
+              amount: newLpAmount,
+              invested: newLpInvested
+            }
           }
         }
 
@@ -355,7 +381,7 @@ const createWindow = () => {
   });
   // When a user clicks Add Transaction, this is called
   ipcMain.on("TransactionAdded", async (evt, transaction) => {
-    if (transaction.fiatValue === 0 && ['buy', 'sell', 'receive', 'close-position'].includes(transaction.type)) {
+    if (transaction.fiatValue === 0 && ['buy', 'sell', 'receive', 'close-position', 'provide-liquidity', 'withdraw-liquidity'].includes(transaction.type)) {
       switch (transaction.type) {
         case 'receive':
         case 'close-position':
@@ -367,6 +393,20 @@ const createWindow = () => {
           var amount = transaction.counterCurrencyAmount
       }
       transaction['fiatValue'] = await getFiatValue(transaction.date, id, amount)
+    }
+    if (transaction.type.includes('liquidity')) {
+      transaction['lpTokenId'] = `${transaction.id}/${transaction.counterCurrencyId}`
+      const symbol1 = await knex('coins').where('id', transaction.id).first().pluck('symbol')
+      const symbol2 = await knex('coins').where('id', transaction.counterCurrencyId).first().pluck('symbol')
+      const symbols = `${symbol1}/${symbol2}`
+      const lpToken = {
+        id: transaction.lpTokenId,
+        symbol: symbols,
+        name: `${symbols.toUpperCase()} LP`,
+        image: 'images/lp.png',
+        value: transaction.fiatValue * 2 / transaction.lpTokenAmount
+      }
+      await knex('customCurrencies').insert(lpToken).onConflict('id').merge()
     }
     if (transaction.feeatValue === 0 && transaction.feeAmount > 0) {
       transaction['feeatValue'] = await getFiatValue(transaction.date, transaction.feeCurrencyId, transaction.feeAmount)
