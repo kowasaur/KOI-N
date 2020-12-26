@@ -3,6 +3,7 @@
 ## input - label Name Equivalents
 ### Default
 - id - Currency
+- type - Tx Type
 - amount - Amount
 - counterCurrencyId - Counter Currency
 - counterCurrencyAmount - Counter Currency Amount
