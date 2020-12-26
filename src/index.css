@@ -26,12 +26,22 @@ a {
 
 #overview {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 5fr 3fr;
   place-items: center;
+  margin-bottom: 0.6em;
+  text-align: center;
 }
 
-ul {
-  list-style: none;
+h1 {
+  font-size: 5em;
+  margin: 0;
+  color: rgb(243, 243, 243);
+}
+
+#profit {
+  display: flex;
+  justify-content: space-evenly;
+  font-size: 1.4em;
 }
 
 button {

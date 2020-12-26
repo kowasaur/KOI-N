@@ -41,11 +41,21 @@ function sortTableByColumn(table, column, asc = false) {
 document.addEventListener("DOMContentLoaded",  () => ipc.send("mainWindowLoaded"));
 
 ipc.on("totalGenerated", (evt, total) => {
-    const ul = document.querySelector('ul');
-    appendElement("li", ul, `Value: ${total.value}`);
-    appendElement("li", ul, `Invested: ${total.invested}`);
-    appendElement("li", ul, `$ Profit: ${total.$profit}`);
-    appendElement("li", ul, `% Profit: ${total.percent_profit}`);
+    const div = document.querySelector('#portfolio');
+    appendElement("div", div, `Invested: ${total.invested}`);
+    appendElement("h1", div, total.value);
+    const profit = appendElement("div", div)
+    profit.id = 'profit'
+    console.log(total.positive);
+    if (total.positive) {
+        plus = '+'
+        className = 'positive'
+    } else {
+        plus = ''
+        className = 'negative'
+    }
+    appendElement("div", profit, plus + total.$profit, undefined, undefined, className);
+    appendElement("div", profit, plus + total.percent_profit, undefined, undefined, className);
 })
 
 ipc.on("portfolioGenerated", (evt, portfolio) => {

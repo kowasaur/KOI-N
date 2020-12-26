@@ -381,7 +381,8 @@ const createWindow = () => {
           value: formatter.format(totalValue),
           invested: formatter.format(invested),
           $profit: formatter.format($profit),
-          percent_profit: `${($profit / invested * 100).toFixed(2)}%`
+          percent_profit: `${($profit / invested * 100).toFixed(2)}%`,
+          positive: totalValue > invested
         }
         mainWindow.webContents.send("totalGenerated", total);
       })
