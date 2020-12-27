@@ -46,7 +46,6 @@ ipc.on("totalGenerated", (evt, total) => {
     appendElement("h1", div, total.value);
     const profit = appendElement("div", div)
     profit.id = 'profit'
-    console.log(total.positive);
     if (total.positive) {
         plus = '+'
         className = 'positive'
@@ -104,7 +103,7 @@ ipc.on("portfolioGenerated", (evt, portfolio) => {
     let highestValues = allValues.slice(0, 10)
     highestValues.push({
         label: 'Other',
-        value: allValues.slice(10).map(coin => coin.value).reduce((a, b) => a + b)
+        value: allValues.slice(10).map(coin => coin.value).reduce((a, b) => a + b, 0)
     })
     const totalValue = highestValues.map(coin => coin.value).reduce((a,b) => a + b)
 

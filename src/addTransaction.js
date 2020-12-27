@@ -117,8 +117,7 @@ function typeChange() {
     }
     // Makes hide hidden
     for (let i = 0; i < hide.length; i++) {
-        document.getElementById(hide[i]).classList.add("hide")
-        document.querySelector(`[for="${hide[i]}"]`).classList.add("hide")
+        document.getElementById(hide[i]).parentElement.classList.add("hide")
     }
 
     // Removes required from everything that currently has it

@@ -13,7 +13,7 @@ header {
   top: 0;
   background-color: #008892;
   padding: 0.4em 0.8em;
-  box-shadow: 0px 1px 9px 2px #15167c;
+  box-shadow: 0px 1px 9px 2px #15177cc0;
 }
 
 header a {
@@ -23,6 +23,8 @@ header a {
 a {
   text-decoration: none;
 }
+
+/* Home */
 
 #overview {
   display: grid;
@@ -109,23 +111,93 @@ td img {
   color: rgb(255, 71, 71);
 }
 
+/* Add Transaction */
+
+#addTransaction {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 2em;
+  grid-row-gap: 0.7em
+}
+
+#addTransaction input, #txForm select {
+  margin-top: 0.2em;
+  background-color: #008b92e7;
+  border: none;
+  padding: 0.3em;
+  font-size: 0.9em;
+  outline: none;
+  color: rgb(233, 233, 233);
+  box-shadow: 0px 0px 4px 2px #15167c;
+}
+
+#addTransaction input {
+  width: 97.5%;
+}
+
+#txForm select {
+  margin-bottom: 1em;
+}
+
+#addTransaction .required {
+  box-shadow: 0px 0px 4px 2px #7c1515;
+  background-color: #b3231ed2;
+}
+
+#buttons {
+  margin-top: 1em;
+  display: flex;
+  gap: 2em;
+}
+
+#buttons button {
+  flex: 40%;
+  text-align: center;
+  font-size: 1em;
+  cursor: pointer;
+  color: white;
+  padding: 1em;
+}
+
+#addButton {
+  background-color: #00a329;
+  box-shadow: 0px 0px 7px 2px #004d13;
+}
+
+#resetButton {
+  background-color: #a30000;
+  box-shadow: 0px 0px 7px 2px #4d0000;
+}
+
+#resetButton:active {
+  background-color: #800000;
+}
+
+#addButton:disabled {
+  cursor: default;
+  color: rgba(255, 255, 255, 0.452);
+  background-color: #005f18;
+}
+
+#addTransaction input:disabled {
+  color: rgba(36, 36, 36, 0.596);
+  background-color: #5e5e5e;
+  box-shadow: 0px 0px 4px 2px #2e2e2e;
+}
+
+#addButton:active {
+  background-color: #008120;
+}
+
 #success {
   display: none;
-}
-
-/* Definitely temporary */
-label {
-  display: block;
-  margin-top: 0.5em;
-}
-
-.required {
-  border: 1px solid red;
 }
 
 .hide {
   display: none;
 }
+
+/* Settings */
 
 main a {
   color: #00b3bd;
@@ -138,7 +210,6 @@ main a {
 }
 
 .exchange {
-  /*background-color: rgb(9,28,40);*/
   background-color: #008b92;
   padding: 1em;
   display: inline-flex;
@@ -196,6 +267,11 @@ dialog::backdrop {
 
 dialog input {
   width: 20em;
+}
+
+dialog label, dialog button {
+  display: block;
+  margin-top: 0.5em;
 }
 
 /* #add-exchange {

@@ -12,7 +12,7 @@
       <a href="settings.html"><img src="images/settings.svg" alt="settings" height="35"></a>
     </header>
     <main>
-    <form oninput="check()">
+    <form oninput="check()" id="txForm">
       <!-- <label for="type">Type</label> -->
       <select name="type" id="type" class="required" onchange="typeChange()">
         <option value="buy">Buy</option>
@@ -27,56 +27,87 @@
         <option value="close-position">Close Position</option>
       </select>
 
-      <label for="lpTokenAmount" class="hide">LP Token Amount</label>
-      <input type="number" name="lpTokenAmount" id="lpTokenAmount" class="hide">
+      <div id="addTransaction">
+      <div class="hide">
+        <label for="lpTokenAmount">LP Token Amount</label>
+        <input type="number" name="lpTokenAmount" id="lpTokenAmount">
+      </div>
 
-      <label for="id">Currency</label>
-      <input type="text" name="id" id="id" class="required" list="id-list">
+      <div>
+        <label for="id">Currency</label>
+        <input type="text" name="id" id="id" class="required" list="id-list">
+      </div>
       <datalist id="id-list"></datalist>
 
-      <label for="amount">Amount</label>
-      <input type="number" name="amount" id="amount" class="required">
+      <div>
+        <label for="amount">Amount</label>
+        <input type="number" name="amount" id="amount" class="required">
+      </div>
 
-      <label for="counterCurrencyId">Counter Currency</label>
-      <input type="text" name="counterCurrencyId" id="counterCurrencyId" class="required" list="id-list">
+      <div>
+        <label for="counterCurrencyId">Counter Currency</label>
+        <input type="text" name="counterCurrencyId" id="counterCurrencyId" class="required" list="id-list">
+      </div>
+      
+      <div>
+        <label for="counterCurrencyAmount">Counter Currency Amount</label>
+        <input type="number" name="counterCurrencyAmount" id="counterCurrencyAmount" class="required">
+      </div>
+      
+      <div>
+        <label for="fiatValue">Fiat Value</label>
+        <input type="number" name="fiatValue" id="fiatValue">
+      </div>
 
-      <label for="counterCurrencyAmount">Counter Currency Amount</label>
-      <input type="number" name="counterCurrencyAmount" id="counterCurrencyAmount" class="required">
-
-      <label for="fiatValue">Fiat Value</label>
-      <input type="number" name="fiatValue" id="fiatValue">
-
-      <label for="date">Date</label>
+      <div>
+        <label for="date">Date</label>
       <input type="datetime-local" name="date" id="date" class="required">
-
-      <label for="otherParty">Other Party</label>
-      <input type="text" name="otherParty" id="otherParty">
-
-      <label for="wallet">Wallet</label>
+      </div>
+      
+      <div>
+        <label for="otherParty">Other Party</label>
+        <input type="text" name="otherParty" id="otherParty">
+      </div>
+      
+      <div>
+        <label for="wallet">Wallet</label>
       <input type="text" name="wallet" id="wallet">
-
-      <label for="feeCurrencyId">Fee Currency</label>
-      <input type="text" name="feeCurrencyId" id="feeCurrencyId" list="id-list">
-
-      <label for="feeAmount">Fee Amount</label>
-      <input type="number" name="feeAmount" id="feeAmount">
-
-      <label for="feeatValue">Fee Fiat Value</label>
-      <input type="number" name="feeatValue" id="feeatValue">
-
-      <label for="link">Link</label>
-      <input type="text" name="link" id="link">
-
-      <label for="note">Note</label>
-      <input type="text" name="note" id="note">
-
-      <button type="button" onclick="addTransaction()" disabled>Add Transaction</button>
-      <button type="button" onclick="resetForm()">Reset</button>
+      </div>
+      
+      <div>
+        <label for="feeCurrencyId">Fee Currency</label>
+        <input type="text" name="feeCurrencyId" id="feeCurrencyId" list="id-list">
+      </div>
+      
+      <div>
+        <label for="feeAmount">Fee Amount</label>
+        <input type="number" name="feeAmount" id="feeAmount">
+      </div>
+      
+      <div>
+        <label for="feeatValue">Fee Fiat Value</label>
+        <input type="number" name="feeatValue" id="feeatValue">
+      </div>
+      
+      <div>
+        <label for="link">Link</label>
+        <input type="text" name="link" id="link">
+      </div>
+      
+      <div>
+        <label for="note">Note</label>
+        <input type="text" name="note" id="note">
+      </div>
+      </div>
+      <div id="buttons">
+        <button type="button" onclick="addTransaction()" disabled id="addButton">Add Transaction</button>
+        <button type="button" onclick="resetForm()" id="resetButton">Reset</button>
+      </div>
     </form>
 
     <div id="success">Transaction Added Succesfully</div>
 
-    <p style="color:red">Boxes with a red border are required</p>
+    <p style="color:red">Red boxes are required</p>
     <p>If no fiat value is entered, it will be estimated using CoinGecko API</p>
     </main>
     <script src="addTransaction.js"></script>
