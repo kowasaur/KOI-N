@@ -215,8 +215,9 @@ const createWindow = () => {
             case 'withdraw-liquidity':
               tx.amount *= -1
             case 'sell':
-              tx.amount *= -1
-              tx.counterCurrencyAmount *= -1
+              var newAmount = coin.amount - tx.amount;
+              var newCounterAmount = counterCoin.amount + tx.counterCurrencyAmount
+              break;
             case 'buy':
               var newCounterAmount = counterCoin.amount - tx.counterCurrencyAmount;
             case 'deposit':
