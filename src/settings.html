@@ -13,12 +13,12 @@
     </header>
     <main>
       <h2>Exchange Connections</h2>
-      <section id="exchanges">
+      <section class="items" id="exchanges">
         <button class="exchange" onclick="addExchange()">Add Exchange</button>
       </section>
       
       <dialog><form id="add-exchange" method="dialog">
-        <button type="button" class="x" onclick="bruh()">&times</button>
+        <button type="button" class="x" onclick="bruh()" value="no">&times</button>
         <h2>Add Exchange Connection</h2>
         <p>Ensure you use a read-only API key.</p>
 
@@ -37,6 +37,33 @@
         <input type="password" name="secret" id="secret" required>
 
         <button id="confirmBtn" value="yes">Add Connection</button>
+      </form></dialog>
+
+      <h2>Custom Coins</h2>
+      <section class="items" id="customCurrencies">
+        <button class="exchange" onclick="addCoin()"  id="coinButton">Add Coin</button>
+      </section>
+
+      <dialog id="addCoin"><form method="dialog" id="coinForm">
+        <button type="button" class="x" onclick="closeCoin()" value="no">&times</button>
+        <h2>Add Custom Coin</h2>
+
+        <label for="id">Id</label>
+        <input type="text" name="id" id="id"placeholder="xau">
+
+        <label for="symbol">Symbol</label>
+        <input type="text" name="symbol" id="symbol" placeholder="aus">
+
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" placeholder="Gold">
+
+        <label for="image">Image URL</label>
+        <input type="text" name="image" id="image">
+
+        <label for="value">Value</label>
+        <input type="text" name="value" id="value" placeholder="10.6">
+
+        <button id="confirmBtn" value="yes">Add Coin</button>
       </form></dialog>
 
       <section>

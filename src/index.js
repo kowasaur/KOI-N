@@ -441,7 +441,9 @@ const createWindow = () => {
   ipcMain.on("settingsLoaded", () => {
     knex('keys').join('exchangeInfo', 'keys.exchange', 'exchangeInfo.exchange')
     .select('keys.exchange', 'key', 'name', 'imageUrl')
-    .then(result => mainWindow.webContents.send("connections", result))
+    .then(result => mainWindow.webContents.send("connections", result));
+
+    knex('customCurrencies').then(result => mainWindow.webContents.send("customCurrencies", result))
   })
 
   ipcMain.on("addTransactionLoaded", () => knex('coins').select()
@@ -461,6 +463,15 @@ const createWindow = () => {
   ipcMain.on("removeExchange", (evt, exchange) => {
     knex('keys').where('exchange', exchange).del()
     .then(() => mainWindow.webContents.send("Alert", "Exchange Connection Removed Successfully"))
+  })
+
+  // When Add Coin is clicked
+  ipcMain.on("addCoin", (evt, coin) => {
+    knex('customCurrencies').insert(coin).then( () => {
+      mainWindow.webContents.send("Alert", "Custom Coin Added Successfully");
+    }).catch(() => {
+      dialog.showErrorBox('Error: Duplicate Coin', '');
+    });
   })
 };
 
