@@ -10,6 +10,7 @@ A cryptocurrency portfolio tracker.
 - Make option to not include receives in value and profit
 - Change how calculating "invested" works (from like an average to allowing the user to choose what specific transactions they are selling)
 - Right now, if you have more than 100 coins, they won't show up on the dashboard because of the pagination (only shows 1 page rn)
+- hide 0 balances
 
 ### Add Transaction
 - Improve currency boxes using selectize.js so it's sorted by market cap and has coin logo

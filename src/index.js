@@ -182,7 +182,7 @@ loadExchangeData()
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 700,
+    width: 750,
     height: 800,
     
     webPreferences: {
@@ -292,6 +292,13 @@ const createWindow = () => {
                 invested: txPortfolio[tx.id].invested + tx.feeatValue
               }
             case 'sell':
+              newInvested = feeCoin.invested - tx.feeatValue
+              break;
+            case 'receive':
+              txPortfolio[tx.id] = {
+                amount: txPortfolio[tx.id].amount,
+                invested: txPortfolio[tx.id].invested + tx.feeatValue
+              }
               newInvested = feeCoin.invested - tx.feeatValue
               break;
             default:
