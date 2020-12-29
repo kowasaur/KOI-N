@@ -53,6 +53,10 @@ function typeChange() {
             required = ["lpTokenAmount", "type", "id", "amount", "date", "counterCurrencyId", "counterCurrencyAmount"]
             hide = []
             break;
+        case "migrate":
+            required = ["type", "id", "date", "amount", "counterCurrencyId"]
+            hide = ["lpTokenAmount", "fiatValue", "counterCurrencyAmount"]
+            break
     }
 
     // Labels

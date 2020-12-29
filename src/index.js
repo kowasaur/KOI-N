@@ -230,6 +230,10 @@ const createWindow = () => {
             case 'withdraw':
               var newAmount = coin.amount - tx.amount
               break;
+            case 'migrate':
+              var newAmount = coin.amount + tx.amount
+              var newCounterAmount = 0
+              break;
             default:
               var newAmount = coin.amount;
           }
@@ -254,6 +258,10 @@ const createWindow = () => {
             case 'withdraw-liquidity':
               var newInvested = coin.invested + tx.fiatValue
               var newCounterInvested = counterCoin.invested + tx.fiatValue
+              break;
+            case 'migrate':
+              var newInvested = counterCoin.invested
+              var newCounterInvested = 0
               break;
             default:
               var newInvested = coin.invested;
