@@ -331,6 +331,7 @@ const createWindow = () => {
         const value = marketData[i].current_price * amount
         const invested = txPortfolio[marketData[i].id].invested
         const $profit = value - invested
+        const rank = marketData[i].market_cap_rank
         portfolio.push({
           image: marketData[i].image,
           coin: marketData[i].name,
@@ -339,7 +340,7 @@ const createWindow = () => {
           invested: formatter.format(invested),
           $profit: formatter.format($profit),
           percent_profit: `${(($profit / invested || 0) * 100).toFixed(2)}%`,
-          coin_number: marketData[i].market_cap_rank,
+          coin_number: (rank == null) ? 69420 : rank,
           amount_number: amount,
           value_number: value,
           invested_number: invested,
