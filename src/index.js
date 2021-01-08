@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const toDecimals  = require('round-to-decimal');
@@ -28,10 +28,12 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
   app.quit();
 }
 
+const dataFolder = app.getPath('userData')
+
 // Database
 var knex = require("knex")({
   client: "sqlite3",
-  connection: { filename: path.join(__dirname, ".." ,"database.sqlite") },
+  connection: {filename: path.join(dataFolder, 'database.sqlite')},
   useNullAsDefault: true
 });
 
@@ -499,6 +501,9 @@ const createWindow = () => {
       dialog.showErrorBox('Error: Duplicate Coin', '');
     });
   })
+
+  // Open Database Folder
+  ipcMain.on("openFolder", () => shell.openPath(dataFolder))
 };
 
 // This method will be called when Electron has finished

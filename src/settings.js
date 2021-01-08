@@ -25,6 +25,10 @@ function closeCoin() {
     coinDialog.close()
 }
 
+function openFolder() {
+    ipc.send("openFolder")
+}
+
 document.addEventListener("DOMContentLoaded",  () => ipc.send("settingsLoaded"));
 
 ipc.on("connections", (evt, connections) => {
