@@ -59,7 +59,8 @@
     "electron-squirrel-startup": "^1.0.0",
     "knex": "^0.21.12",
     "round-to-decimal": "^1.0.3",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^5.0.0",
+    "electron-reload": "^1.5.0"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.54",
@@ -69,7 +70,6 @@
     "@electron-forge/maker-zip": "^6.0.0-beta.54",
     "electron": "11.0.3",
     "electron-builder": "^22.9.1",
-    "electron-rebuild": "^2.3.2",
-    "electron-reload": "^1.5.0"
+    "electron-rebuild": "^2.3.2"
   }
 }
