@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
+const fs = require('fs');
 const toDecimals  = require('round-to-decimal');
 
 const CoinGecko = require('coingecko-api');
@@ -32,6 +33,14 @@ var knex = require("knex")({
   client: "sqlite3",
   connection: { filename: path.join(__dirname, ".." ,"database.sqlite") },
   useNullAsDefault: true
+});
+
+// Create database if it doesn't exist
+knex.schema.hasTable('transactions').then(async exists => {
+  if (!exists) {
+    const sql = fs.readFileSync(path.join(__dirname, 'database.sql')).toString().split(';')
+    sql.forEach(async sql => await knex.schema.raw(sql));
+  }
 });
 
 // Create number formatter
@@ -197,7 +206,7 @@ const createWindow = () => {
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
   // Hides the menu bar
-  // mainWindow.setMenuBarVisibility(false)
+  mainWindow.setMenuBarVisibility(false)
 
   // Database stuff
   ipcMain.on("mainWindowLoaded", () => {  
