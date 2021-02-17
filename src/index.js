@@ -281,10 +281,13 @@ const createWindow = () => {
             amount: newAmount,
             invested: newInvested
           }
-          txPortfolio[tx.counterCurrencyId] = {
-            amount: newCounterAmount,
-            invested: newCounterInvested
+          if (!!tx.counterCurrencyId) {
+            txPortfolio[tx.counterCurrencyId] = {
+              amount: newCounterAmount,
+              invested: newCounterInvested
+            }
           }
+          
           if (tx.type.includes('liquidity')) {
             let lpCoin = txPortfolio[tx.lpTokenId] || { amount: 0, invested: 0 }
             if (tx.type === 'provide-liquidity') {
